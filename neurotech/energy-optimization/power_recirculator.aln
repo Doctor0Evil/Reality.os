@@ -1,0 +1,15 @@
+DEFINE MODULE PowerRecirculator {
+
+  // Recirculation efficiency rating: selectable upgrade levels
+  ENUM EfficiencyLevel { TEN=0.10, TWENTY=0.20, FORTY=0.40, SIXTY=0.60 }
+
+  FUNCTION ApplyRecirculation(upgrades: EfficiencyLevel, active_augs: LIST):
+    FOR aug IN active_augs:
+        aug.energy_consumption *= (1.0 - upgrades.value);
+        LogEvent("Energy consumption reduced via Power Recirculator", CurrentTimestamp());
+
+  PROCEDURE UpgradeRecirculator(level: EfficiencyLevel):
+    system.recirc_level = level;
+    NotifyUser("Power Recirculator upgraded to tier " + level.name);
+
+}
