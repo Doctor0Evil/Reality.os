@@ -1,3 +1,11 @@
+/* Fully compliant, neuro-rights-driven module for safe, user-personalized human-machine co-adaptation.
+   Incorporates: 
+    - Probabilistic, multi-modal risk monitoring (biometric fusion, ML thresholding)
+    - Modular and resilient augmentation progression with resource gating, fuzzy logic safety, and fail-safe "faint" protection
+    - Secure ledger and consent trace hooks for legal and ethical compliance 
+    - Direct hooks for neuromorphic (Loihi 2, TrueNorth) and biometric pipeline integration
+*/
+
 DEFINE MODULE AdaptiveRiskAlignment {
 
   ENTITY AlignmentSession {
@@ -6,48 +14,124 @@ DEFINE MODULE AdaptiveRiskAlignment {
     neurodyne_load: FLOAT [DEFAULT=1.0],
     zeta_exposure: FLOAT [DEFAULT=0.0],
     hazard_risk: FLOAT [DEFAULT=0.1],
-    cleansing_enabled: BOOLEAN [DEFAULT=FALSE]
+    cleansing_enabled: BOOLEAN [DEFAULT=FALSE],
+    last_cleansing: TIMESTAMP [DEFAULT=0],
+    user_profile_id: STRING [REQUIRED],
+    system_mode: ENUM ["STANDBY", "NORMAL", "ASSIST", "FAINT"] [DEFAULT="STANDBY"]
   }
 
-  FUNCTION RiskCurve(level: INTEGER):  // Exponential escalation
-    RETURN base_risk * (1 + alpha)^(level - 1);
+  FUNCTION RiskCurve(level: INTEGER, user_profile: USER_PROFILE): FLOAT
+    base_risk = 0.1; alpha = 0.25;
+    risk_multiplier = user_profile.risk_calibration_factor;
+    RETURN base_risk * (1 + alpha)^(level - 1) * risk_multiplier;
 
-  FUNCTION FatalThreshold():  // Probabilistic, recalibrated per user
-    RETURN ComputeThreshold(EEG, HRV, PopulationMetrics);
+  FUNCTION FatalThreshold(user_profile: USER_PROFILE): FLOAT
+    RETURN PredictNeuralOverload(
+      current_eeg = user_profile.eeg_stream,
+      current_hrv = user_profile.hrv_stream,
+      current_gsr = user_profile.gsr_stream,
+      current_pupil = user_profile.pupil_dilation,
+      historical_pattern = user_profile.overload_history
+    );
+
+  FUNCTION ExposureFunction(level: INTEGER): FLOAT
+    RETURN 0.05 * (1.5 ^ level);
+
+  FUNCTION BoostCurve(level: INTEGER): INTEGER
+    IF level <= 3 THEN RETURN 10;
+    ELSE IF level <= 6 THEN RETURN 6;
+    ELSE RETURN 2; END IF;
+
+  FUNCTION RequiredCaps(level: INTEGER): FLOAT
+    RETURN 0.5 * (2 ^ level);
 
   PROCEDURE PerformAlignment(session: AlignmentSession, payment: FLOAT, metrics: METRIC_SET):
     IF payment < RequiredCaps(session.alignment_level):
+      LogEvent("Alignment denied: Insufficient resources", session, CurrentTimestamp());
       RETURN ERROR("Insufficient resources");
-
-    session.hazard_risk += RiskCurve(session.alignment_level);
     session.zeta_exposure += ExposureFunction(session.alignment_level);
+    session.hazard_risk += RiskCurve(session.alignment_level, GetUserProfile(session.user_profile_id));
     session.neurodyne_load = UpdateCognitiveLoad(metrics);
     session.cumulative_boost += BoostCurve(session.alignment_level);
-
-    IF session.hazard_risk > FatalThreshold():
+    session = FuzzyAlignmentControl(metrics, session);
+    IF session.hazard_risk > FatalThreshold(GetUserProfile(session.user_profile_id)):
       TriggerSafetyProcedure("Faint");
+      LogEvent("Faint triggered", session, CurrentTimestamp());
     ELSE IF session.cleansing_enabled:
       session.hazard_risk *= 0.2;
       session.zeta_exposure = 0.0;
-
-    // Adaptive augmentation via fuzzy logic controller
-    session = FuzzyAlignmentControl(metrics, session);
-
+      session.last_cleansing = CurrentTimestamp();
+      LogEvent("Cleansing initiated", session, CurrentTimestamp());
+    IF session.system_mode == "FAINT": session.system_mode = "STANDBY";
+    ELSE IF session.hazard_risk > 0.7: session.system_mode = "ASSIST";
+    ELSE IF session.hazard_risk < 0.3: session.system_mode = "NORMAL";
+    ELSE: session.system_mode = "STANDBY";
     LogEvent("Alignment performed", session, CurrentTimestamp());
     RETURN session;
 
-  FUNCTION FuzzyAlignmentControl(metrics: METRIC_SET, session: AlignmentSession):
-    score = AIModelPredict(metrics);
-    IF score.high_workload AND session.hazard_risk.high THEN
-      session.alignment_level = DECREASE();
+  FUNCTION FuzzyAlignmentControl(metrics: METRIC_SET, session: AlignmentSession): AlignmentSession
+    prediction = AIModelPredict(metrics);
+    IF prediction.workload > 0.8 AND session.hazard_risk > 0.6 THEN
+      session.alignment_level = MAX(1, session.alignment_level - 1);
       session.cleansing_enabled = TRUE;
-    ELSE IF score.low_workload AND session.hazard_risk.low THEN
-      session.alignment_level = INCREASE();
+      LogEvent("Fuzzy Control: Downgrade", session, CurrentTimestamp());
+    ELSE IF prediction.workload < 0.3 AND prediction.stress < 0.4 AND session.hazard_risk < 0.4 THEN
+      session.alignment_level = MIN(10, session.alignment_level + 1);
+      session.cleansing_enabled = FALSE;
+      LogEvent("Fuzzy Control: Upgrade", session, CurrentTimestamp());
+    ELSE IF prediction.fatigue > 0.7 OR (prediction.workload > 0.6 AND session.zeta_exposure > 1.5) THEN
+      session.cleansing_enabled = TRUE;
+      LogEvent("Fuzzy Control: Mandatory cleanse", session, CurrentTimestamp());
+    END IF;
     RETURN session;
 
   PROCEDURE TriggerSafetyProcedure(event: STRING):
     IF event == "Faint":
-      system_status = "Lockdown";
+      system_status = "LOCKDOWN";
       SuspendAugmentation();
-      NotifyUser("System faint triggered for safety");
+      DeactivateNeuromorphicAccelerators();
+      NotifyUser("System Faint: Safety Protocol Activated. Neural Load Exceeded.");
+      ActivateRecoveryMode();
+      LogEvent("Safety Faint: LOCKDOWN", NULL, CurrentTimestamp());
+
+  PROCEDURE ActivateRecoveryMode():
+    SetRenderingQuality("LOW");
+    SetAudioMode("VOICE_ONLY");
+    SetHUDColor("MONOCHROME");
+    SetProcessingPriority("BACKGROUND");
+
+  PROCEDURE SuspendAugmentation():
+    DisableNeuroStimulusOutput();
+    DisableRealTimeCognitiveEnhancement();
+    PauseAllAIInferenceLoops();
+    LogEvent("Augmentation suspended", NULL, CurrentTimestamp());
+
+  PROCEDURE LogEvent(event: STRING, session: AlignmentSession, timestamp: TIMESTAMP):
+    WriteToSecureLedger(event, session, timestamp, "MIND-2025");
+
+  ENTITY USER_PROFILE {
+    user_profile_id: STRING [REQUIRED],
+    baseline_eeg: FLOAT [REQUIRED],
+    baseline_hrv: FLOAT [REQUIRED],
+    risk_calibration_factor: FLOAT [REQUIRED],
+    consent_history: LIST[CONSENT_RECORD] [REQUIRED],
+    preferred_cleansing_frequency: INTEGER [DEFAULT=3],
+    neuro_rights_version: STRING [DEFAULT="MIND-2025"]
+  }
+
+  ENTITY CONSENT_RECORD {
+    timestamp: TIMESTAMP,
+    action: ENUM ["GRANT", "REVOKE", "MODIFY"],
+    scope: ENUM ["ALIGNMENT", "DATA_COLLECTION", "CLEANSING", "NEURO_STIMULATION"],
+    version: STRING
+  }
+
+  PROCEDURE UpdateCognitiveLoad(metrics: METRIC_SET): FLOAT
+    RETURN NormalizeLoad(
+      eeg_power = metrics.eeg_theta + metrics.eeg_gamma,
+      hrv_sdnn = metrics.hrv_sdnn,
+      gsr_conductance = metrics.gsr,
+      pupil_dilation = metrics.pupil,
+      gaze_entropy = metrics.gaze_entropy
+    );
 }
