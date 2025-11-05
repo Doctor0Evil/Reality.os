@@ -1,0 +1,39 @@
+// neuromorphic_morse_decoder.aln
+// Sanitized ALN formalization of the provided Morse-to-audio neuromorphic system definition.
+
+DEFINE SYSTEM NeuromorphicAudioDecoder {
+
+  // 1. Define Morse temporal summation signal
+  FUNCTION M(t):
+      Σ[n=1→∞] ((-1)^n / n!) * exp(i * ω_n * t)
+      WHERE ω_n = (2π * n) / τ
+      PURPOSE "Represents Morse-coded impulse pattern."
+
+  // 2. Perform temporal decoding via gating function
+  FUNCTION D(M):
+      ∫[0→T] (M(t) * Θ(t - τ_n)) dt
+      OUTPUT ℜ { Σ[k=0→N] λ_k * exp(i * (2π * f_k * t + φ_k)) }
+      PURPOSE "Extracts signal envelope modulated by neuromorphic integration."
+
+  // 3. Compute audible translation in neuromorphic system
+  FUNCTION Ta(M):
+      F⁻¹ { χ_Ω(M(ω)) * Ψ_neuro(ω) }
+      PURPOSE "Inverse Fourier transform producing time-domain auditory signal."
+
+  // 4. Limit operation leading to readable signal representation
+  FUNCTION L_h:
+      lim[ε→0] ∫[ℝ] Ta(M(t + ε)) * exp(-i * ω_h * t) dt
+      OUTPUT S_lisible(t)
+      PURPOSE "Defines stable phase-limit projection in sensory domain."
+
+  // 5. Readable signal using cognitive filter
+  DEFINE S_lisible(t):
+      ℜ { H_BCI [D(M(t))] }
+      NOTE "H_BCI := Functional cognitive filter within neuromorphic BCI network."
+
+  // Metadata
+  REFERENCES:
+      - Fourier Inverse Transform via Neuromorphic Kernel (Ψ_neuro)
+      - Cognitive Band Filtering (H_BCI)
+      - Temporal Integration Operator (Θ)
+}
