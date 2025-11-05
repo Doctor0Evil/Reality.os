@@ -1,0 +1,28 @@
+DEFINE BLOCK NeuromorphicDeviceRegistry {
+
+  PROTOCOL DeviceProvision {
+    // Generate deviceID = HASH[hardware-root + timestamp + mfg-ID]
+    HARDWARE_ENCRYPT deviceID;
+
+    REQUEST networkAddress(deviceID, securityAssert);
+
+    IF RegistryConfirm(deviceID, complianceOK):
+      ASSIGN publicAddress;
+      LOG {deviceID, publicAddress, deviceType, complianceCerts};
+    ELSE:
+      AUDIT_FAILURE(deviceID);
+  }
+
+  PROTOCOL DeviceDiscovery {
+    // Secure negotiation using TLS/Neuromorphic event-routing
+    AUTHENTICATE(deviceID, publicAddress);
+    IF AUTH_OK: ALLOW_NETWORK_ENTRY();
+    ELSE: DENY();
+  }
+
+  PROTOCOL ChatIntegration {
+    QUERY DeviceCapabilities(deviceID, publicAddress);
+    ESTABLISH SecureSession(deviceID, chatHub);
+    MONITOR compliance(status, sessionActive);
+  }
+}
