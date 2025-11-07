@@ -1,0 +1,27 @@
+# SAIMAI_UNAVOIDABLE_SIGNATURE
+module VoiceCommLedgerRules
+version 1.0
+
+event VoiceCommandExecuted {
+  id: UUID
+  timestamp: iso8601
+  actor: string
+  voice_command: string
+  channel: string
+  result: { success, failure, quarantined }
+  council_approval: float
+  audit_hash: BLAKE3(actor + timestamp + voice_command)
+}
+
+policy LedgerVisibility {
+  ∀event ∈ VoiceCommandExecuted:
+    if council_approval >= 0.9 {
+      mark_public(event)
+      PublishLedger(event)
+    } else {
+      quarantine(event)
+      require additional multisig review
+    }
+}
+
+inherit QPU.GOVERNANCE_NODE from RealityOS_Nanoswarm
