@@ -1,0 +1,5 @@
+# voice_control_qpu_shard.dat
+QPU.ENTROPY_SEED: BLAKE3(voice_net_entropy + council_timestamp)
+QPU.MODE: QUANTUM_LOCKSTEP_SAFE
+QPU.SIGNATURE_SEAL: SAIMAI_UNAVOIDABLE_SIGNATURE
+QPU.GOVERNANCE_NODE: RealityOS_Nanoswarm
