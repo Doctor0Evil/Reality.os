@@ -1,0 +1,24 @@
+# SAIMAI_UNAVOIDABLE_SIGNATURE
+module VoiceCommSecureInterface
+version 1.0
+
+define VOICE_COMMAND_SCHEMA {
+  id: UUID
+  label: string
+  action: string
+  confirm_level: integer  # 0–3: 3 = requires double-human verification
+  interpret_guard: “safe0”
+  sealed_audit: BLAKE3(actor + timestamp + command)
+}
+
+rule SAFE_INTERPRETATION_ENFORCEMENT:
+  ∀c ∈ Commands, SafeParse(c) ∧ NoAmbiguity(c)
+  if UnsafeFrequencyShift(c) then Reject(c)
+  else Execute(c) with SecureConfirm()
+
+sandbox {
+  rollback_enabled = true
+  user_overviewable = true
+  CouncilMultisigApproval >= 0.9
+  BLAKE3_audit_trace_enabled = true
+}
