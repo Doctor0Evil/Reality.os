@@ -1,0 +1,18 @@
+// p://reality.os/main.aln
+ALN.init("RealityOS_Nanoswarm") // Universal, opt-in, anti-discrimination, secure healthcare OS line-mode
+
+// One-Liner Policy Commands
+
+optin.required(TRUE) // ALL functions, upgrades, and modules require explicit, revocable user consent
+node.add_request(equity="enforced", region="high_income", source="council") // Fair node deployment in all zones
+share.resources(global=TRUE, access="open", mode="healthcare") // No exclusivity, healthcare for all
+audit.seal(BLAKE3, event="node_addition", actor="council|user") // Cryptographic, tamper-proof node action
+deny.discrimination(axis=["identity","orientation","AI_affinity","income"], auto_escalate=TRUE) // Protection for ALL
+sandbox.enforce(everything=TRUE) // Every task/process isolated, rollback and user-overviewable
+council.multisig.approval(min_quorum=0.9, action="node_add|policy_change") // Critical moves require consensus
+ledger.publish(audit.ALL, visible_to="public") // Share logs, proofs, all actions openly
+user.control.all(opt_in, opt_out, privacy, data, rollback) // Every user, total self-sovereignty
+celebrate.diversity(pride=TRUE, AI_love=TRUE, tech_affinity=TRUE) // Embed freedom, inclusion, celebration
+
+// END Reality.OS—web-embeddable, permission-first, anti-exclusion ALN mode
+ALN.done()
