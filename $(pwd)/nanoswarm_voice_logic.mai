@@ -1,0 +1,21 @@
+module NanoswarmVoiceLogic
+
+ϕ_voice(command, u) :=
+  (Recognize(u.voice_input)
+  ∧ ParseIntent(command)
+  ∧ ValidateSyntax(command, safe0)
+  ∧ Consent_user(u, command))
+  ⇒ ExecutePolicy(command)
+
+∀command ∈ SystemOperations:
+  if command == "Communications off":
+      requires SecureConfirm(u, biometric_double_check)
+      then SuspendChannel(u)
+  else if command ∈ {"Communications on", "Diagnostics start"}:
+      allow only CouncilWhitelisted(u)
+
+NeuromorphicLinkSafety:
+  ∀signal: noise_entropy(signal) < τ_safe ⟹ forward(signal)
+  else quarantine(signal)
+
+return PolicyOutcome(audit=seal(action, BLAKE3))
