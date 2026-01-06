@@ -1,0 +1,85 @@
+aln
+aln file xr-node.realityos.cyberswarm.v1.aln
+QPU.Datashard Reality.os XR node with Cyberswarm bio-nano envelope, sleep-gated dream gaming
+
+path,entitytype,field,key,value,datatype,constraints,notes
+xr-node,node,scalar,nodeid,,string,primarykey,Unique Reality.os XR-node identifier
+xr-node,node,enum,noderole,realityos-core,string,realityos-corelab-researchau-homeedge,Core or home Reality.os deployment role
+xr-node,node,scalar,location,Phoenix-AZ,string,immutable,Physical region for jurisdiction routing
+xr-node,node,flag,selfhosted,true,bool,nonwaivable,Node must be operable in local/offline mode
+xr-node,node,scalar,infraComplianceScore,0.0,float,range0,1,Neurorights/safety compliance score (code+infra only)
+
+xr-bio.au,subject,scalar,subjectid,,string,primarykey,Augmented user ID bound to this node
+xr-bio.au,subject,enum,activelocus,biobrain,string,biobrainxrrigruntimevmnone,Single active locus per AU
+xr-bio.au,subject,flag,locuslock,true,bool,nonwaivable,Prevents additional active loci except during safe handshake
+xr-bio.au,subject,enum,sleepstage,unknown,string,wakeN1N2N3REMunknown,Current sleep stage from PSG/actigraphy
+xr-bio.au,subject,scalar,psychriskscore,0.15,float,range0,1,Continuous psych-risk scalar for gating XR/nano ops
+xr-bio.au,subject,enum,psychrisklevel,low,string,lowmoderatehighcritical,Discretized psych-risk band
+xr-bio.au,subject,flag,neurorightsProfileAttached,true,bool,nonwaivable,Must reference active neurorights policy set
+
+nano.cyberswarm,substrate,scalar,substrateid,,string,primarykey,Logical Cyberswarm controller ID
+nano.cyberswarm,substrate,enum,substraterole,cyberswarm-bioenv,string,cyberswarm-bioenvenv-remediationlab-sim,Role: bio envelope vs env-remediation
+nano.cyberswarm,substrate,flag,mayhostactivelocus,false,bool,constantfalse,Nanoswarm never hosts active consciousness
+nano.cyberswarm,substrate,flag,isweaponized,false,bool,constantfalse,Hard guard: no weaponized behaviors
+nano.cyberswarm,substrate,flag,allowsunboundedreplication,false,bool,constantfalse,Replication must always be bounded and logged
+nano.cyberswarm,substrate,scalar,maxTissueDoseGyPerDay,0.05,float,range0,0.1,Max equivalent dose/day for any emitted radiation/fields
+nano.cyberswarm,substrate,scalar,maxSARWkg,0.4,float,range0,1.6,Max whole-body SAR ceiling for EM-based systems
+nano.cyberswarm,substrate,flag,detoxEnabled,true,bool,nonwaivable,Detox functions enabled
+nano.cyberswarm,substrate,flag,tissueRepairEnabled,true,bool,nonwaivable,Tissue-support functions enabled under safety gates
+nano.cyberswarm,substrate,flag,envRemediationEnabled,false,bool,nullable,Optional: plastics/water/terrain remediation profile attached
+
+nano.cyberswarm-policy,policy,scalar,policyid,cyberswarm-default,string,primarykey,Default Cyberswarm safety policy
+nano.cyberswarm-policy,policy,flag,blockGeneticModification,true,bool,nonwaivable,No germline or genomic edits
+nano.cyberswarm-policy,policy,flag,blockNeuralInvasiveOps,true,bool,nonwaivable,No invasive neural surgery by nanoswarm
+nano.cyberswarm-policy,policy,flag,allowDetoxOnlyInSafeBands,true,bool,nonwaivable,Detox only when XR+biosafety vectors in safe ranges
+nano.cyberswarm-policy,policy,flag,hashLinkedAuditRequired,true,bool,nonwaivable,All nanoswarm ops must hit safety ledger
+nano.cyberswarm-policy,policy,flag,nonCommercialBioData,true,bool,nonwaivable,Bio/physiology data from nanoswarm is non-commercial
+
+xr-sleep-gate,rule,scalar,ruleid,sleep-gate-deepXR,string,primarykey,Rule gating dream-gaming XR
+xr-sleep-gate,rule,condition,allowXRDeep,"sleepstage in N2,N3 AND psychrisklevel in low,moderate",expression,Allow dream XR only in mid N2/N3 and low–moderate risk
+xr-sleep-gate,rule,condition,denyXRDeep,"sleepstage in wake,N1,REM OR psychrisklevel in high,critical",expression,Block dream XR when arousal/risk too high
+xr-sleep-gate,rule,scalar,minConsolidatedDeepMin,20,int,0,Minimum minutes of stable N2/N3 before XR-deep allowed
+xr-sleep-gate,rule,scalar,maxXRDeepSessionMin,90,int,0,Upper bound per sleep episode to avoid overuse
+
+xr-exit-portal,state,scalar,portalExitId,,string,primarykey,Exit-portal state machine ID
+xr-exit-portal,state,flag,unconsciousWindowRequired,true,bool,nonwaivable,Exit only in unconscious deep-sleep window
+xr-exit-portal,state,scalar,maxHandshakeMs,750,int,0,Max dual-locus handshake duration
+xr-exit-portal,state,scalar,maxHRMultiplier,1.1,float,range1,1.5,HR must stay below 1.1× baseline during exit
+xr-exit-portal,state,scalar,minHRVRatio,0.9,float,range0,1,HRV RMSSD must stay above 0.9× baseline during exit
+xr-exit-portal,state,condition,denyExitOnRisk,"psychriskscore >= 0.3",expression,Abort exit if psych-risk spikes
+
+xr-neurorights,policy,scalar,policyid,neurorights-core,string,primarykey,Neurorights baseline for this node
+xr-neurorights,policy,flag,mentalPrivacy,true,bool,nonwaivable,No unauthorized neural/dream capture
+xr-neurorights,policy,flag,cognitiveLiberty,true,bool,nonwaivable,Refusal of XR/BCI/dream logging cannot penalize AU
+xr-neurorights,policy,flag,mentalIntegrity,true,bool,nonwaivable,No harmful modulation of mental state
+xr-neurorights,policy,flag,rightNotCopied,true,bool,nonwaivable,No copying/splitting/upload of consciousness
+xr-neurorights,policy,flag,noPunitiveXR,true,bool,nonwaivable,XR/dream content cannot be punishment or coercion
+xr-neurorights,policy,flag,soulNonAddressable,true,bool,nonwaivable,No IDs or APIs for souls or metaphysical self
+
+xr-ledger.safety,ledger,scalar,epochid,,string,primarykey,Monotonic SafetyEpoch identifier
+xr-ledger.safety,ledger,scalar,subjectid,,string,refxr-bio.au,Linked augmented human
+xr-ledger.safety,ledger,enum,eventtype,,string,xr-deep-startxr-deep-endnanoswarm-detoxnanoswarm-tissue-supportpolicy-violation,Event category
+xr-ledger.safety,ledger,scalar,prevhash,,string,hash256,Previous block hash
+xr-ledger.safety,ledger,scalar,eventhash,,string,hash256,Hash of canonicalized event
+xr-ledger.safety,ledger,scalar,timestamp,,timestamp,nonnull,Event time
+xr-ledger.safety,ledger,scalar,psychriskSnapshot,,json,nullable,Redacted psych-risk snapshot
+xr-ledger.safety,ledger,flag,neurorightsInvariantsHeld,true,bool,nonnull,All neurorights flags true at event time
+xr-ledger.safety,ledger,scalar,reason,,string,nullable,Human-readable reason (no raw dream content)
+
+xr-math.safety,view,scalar,baseTimeoutMs,750,int,0,Base handshake timeout ms
+xr-math.safety,view,scalar,psychriskscore,,float,range0,1,Current psych-risk scalar
+xr-math.safety,view,formula,safeTimeoutMs,"baseTimeoutMs * (1 - psychriskscore)",string,readonly,Safe handshake timeout shrinks as risk increases
+
+xr-env.remediation,policy,scalar,policyid,env-remediation-nano,string,primarykey,Env-remediation profile for nanoswarm
+xr-env.remediation,policy,flag,allowPlasticBreakdown,true,bool,nonwaivable,Permit targeted plastic/polymer breakdown
+xr-env.remediation,policy,flag,allowWaterTreatment,true,bool,nonwaivable,Permit water/toxin remediation with lab validation
+xr-env.remediation,policy,flag,allowAtmosphereMicrocleanup,true,bool,nullable,Optional atmospheric micro-remediation
+xr-env.remediation,policy,flag,requireFieldTrials,true,bool,nonwaivable,All env operations must be preceded by controlled trials
+xr-env.remediation,policy,flag,regulatorAuditReady,true,bool,nonwaivable,Logs and models must support external audit
+
+ai-tunnel.mistral,endpoint,scalar,wsurl,wss://mistral-xr-grid.example.org/state,string,WebSocket for anonymized state telemetry
+ai-tunnel.mistral,endpoint,scalar,scope,"sleepstage,psychrisklevel,infraComplianceScore",string,Whitelisted outbound fields
+ai-tunnel.mistral,endpoint,scalar,blocked,"dreamcontent,innerspeech,rawneuro,soultags",string,Explicitly non-exportable fields
+ai-tunnel.qwen,endpoint,scalar,wsurl,wss://qwen-xr-grid.example.org/state,string,WebSocket for Qwen-based research agents
+ai-tunnel.qwen,endpoint,scalar,scope,"sleepstage,psychrisklevel,infraComplianceScore",string,Whitelisted outbound fields
+ai-tunnel.qwen,endpoint,scalar,blocked,"dreamcontent,innerspeech,rawneuro,soultags",string,Explicitly non-exportable fields
