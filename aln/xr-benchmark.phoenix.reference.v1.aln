@@ -1,0 +1,69 @@
+aln
+aln destination-path,xr-benchmark.phoenix.reference.v1.aln
+QPU.Datashard Phoenix reference benchmarking harness for deterministic equality (E, Dr, C)
+path,entitytype,field,key,value,datatype,constraints,notes
+
+SECTION,META
+ROW,meta,harness,scalar,harnessid,phoenix-ref-benchmark-v1,string,primarykey,Reference harness ID
+ROW,meta,harness,scalar,scope,Reality.os,string,nonnull,Native execution scope
+ROW,meta,harness,flag,read_only,true,bool,nonwaivable,Harness never mutates runtime state
+ROW,meta,harness,flag,fail_closed,true,bool,nonwaivable,Any mismatch fails
+
+SECTION,NUMERIC-SEMANTICS
+ROW,num,semantics,enum,float_type,float64,string,nonnull,IEEE-754 fixed
+ROW,num,semantics,enum,eval_order,left_to_right,string,nonnull,Fixed evaluation order
+ROW,num,semantics,scalar,tolerance,0.001,float,nonnull,Max |Δ| allowed
+
+SECTION,CANONICAL-MATH
+ROW,math,formula,scalar,E,"S*(1-R)*Es",string,readonly,Eligibility
+ROW,math,formula,scalar,Dr,"Dday/Dmax",string,readonly,Dose ratio
+ROW,math,formula,scalar,C,"1-(3*Vcrit+2*Vmaj+Vmin)/N",string,readonly,Compliance unclamped
+ROW,math,rule,scalar,C_clamp,"clamp(C,0,1)",string,readonly,Clamp to [0,1]
+
+SECTION,GOLDEN-VECTORS
+ROW,vec,input,scalar,vectorid,GV-001,string,primarykey,Golden vector
+ROW,vec,input,scalar,S,0.8,float,nonnull,
+ROW,vec,input,scalar,R,0.2,float,nonnull,
+ROW,vec,input,scalar,Es,1.0,float,nonnull,
+ROW,vec,input,scalar,Dday,0.3,float,nonnull,
+ROW,vec,input,scalar,Dmax,1.0,float,nonnull,
+ROW,vec,input,scalar,Vcrit,0,int,nonnull,
+ROW,vec,input,scalar,Vmaj,0,int,nonnull,
+ROW,vec,input,scalar,Vmin,0,int,nonnull,
+ROW,vec,input,scalar,N,100,int,nonnull,
+ROW,vec,expect,scalar,E_exp,0.64,float,nonnull,
+ROW,vec,expect,scalar,Dr_exp,0.3,float,nonnull,
+ROW,vec,expect,scalar,C_exp,1.0,float,nonnull,
+
+SECTION,SAFETY-EPOCH
+ROW,epoch,log,scalar,epochid,,string,primarykey,Epoch identifier
+ROW,epoch,log,scalar,input_hash,,string,nonnull,Hash of vector inputs
+ROW,epoch,log,scalar,E,,float,readonly,Computed E
+ROW,epoch,log,scalar,Dr,,float,readonly,Computed Dr
+ROW,epoch,log,scalar,C,,float,readonly,Computed C
+ROW,epoch,log,flag,match_reference,,bool,readonly,Equality result
+
+SECTION,ASSERTIONS
+ROW,assert,check,condition,E_match,
+"|E - E_exp| <= tolerance",
+string,readonly,Eligibility equality
+ROW,assert,check,condition,Dr_match,
+"|Dr - Dr_exp| <= tolerance",
+string,readonly,Dose equality
+ROW,assert,check,condition,C_match,
+"|C - C_exp| <= tolerance",
+string,readonly,Compliance equality
+ROW,assert,check,condition,all_match,
+"E_match AND Dr_match AND C_match",
+string,readonly,Pass/fail
+
+SECTION,EXCLUSIONS
+ROW,exclude,guard,bool,no_soul,true,bool,nonwaivable,No soul fields
+ROW,exclude,guard,bool,no_karma,true,bool,nonwaivable,No karma/reputation
+ROW,exclude,guard,bool,no_raw_psg_export,true,bool,nonwaivable,Raw PSG local-only
+
+SECTION,OUTPUT
+ROW,out,result,enum,status,,string,pass,fail,Deterministic verdict
+ROW,out,result,scalar,platform_id,,string,nonnull,Engine identifier
+
+FOOTER,END-OF-SHARD
