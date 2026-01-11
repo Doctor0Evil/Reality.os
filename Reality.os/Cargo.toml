@@ -1,0 +1,33 @@
+[workspace]
+members = [
+    "core",
+    "xr-dream/reality-os/dream-primitives/v1",
+    "tools/reality-orchestrator",
+    "tools/reality-lab-cli",
+]
+
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0"
+authors = ["Phoenix-XR-Sleep-Lab"]
+repository = "https://github.com/Doctor0Evil/Reality.os"
+
+[workspace.dependencies]
+tokio = { version = "1.39", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+clap = { version = "4.5", features = ["derive"] }
+uuid = { version = "1.8", features = ["v4", "serde"] }
+anyhow = "1.0"
+toml = "0.8"
+async-trait = "0.1"
+kube = { version = "0.93", default-features = false, features = ["runtime", "derive", "client", "rustls-tls"] }
+k8s-openapi = { version = "0.23", default-features = false, features = ["v1_30"] }
+git2 = "0.18"
+indicatif = "0.17"
+url = "2.5"
+directories = "5.0"
