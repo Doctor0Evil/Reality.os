@@ -1,0 +1,63 @@
+schema BioscaleRealityOSRecord {
+    string project_id;
+    string stage;
+    string metric;
+    string unit;
+    float  value;
+    float  baseline;
+    float  ecoimpactscore;
+    string notes;
+}
+
+table BioscaleRealityOSWorkflow2026v1 : BioscaleRealityOSRecord = [
+  {
+    project_id: "BioscaleReality01",
+    stage: "SignalBinding",
+    metric: "DecoderAccuracy",
+    unit: "percent",
+    value: 91.5,
+    baseline: 0.0,
+    ecoimpactscore: 0.81,
+    notes: "Non-invasive neuromotor intent decoding (sEMG → IntentEvent) in Reality.os"
+  },
+  {
+    project_id: "BioscaleReality01",
+    stage: "SignalBinding",
+    metric: "AvgLatency",
+    unit: "ms",
+    value: 45.0,
+    baseline: 0.0,
+    ecoimpactscore: 0.78,
+    notes: "End-to-end neuromotor → IntentEvent latency inside the service graph"
+  },
+  {
+    project_id: "BioscaleReality01",
+    stage: "AppDevelopment",
+    metric: "AvgDailyDeviceHoursReduced",
+    unit: "hours_per_user_day",
+    value: 2.0,
+    baseline: 0.0,
+    ecoimpactscore: 0.84,
+    notes: "Reduction in handheld screen hours from bioscale-aware apps"
+  },
+  {
+    project_id: "BioscaleReality01",
+    stage: "AppDevelopment",
+    metric: "HealthyEngagementBand",
+    unit: "dimensionless",
+    value: 0.65,
+    baseline: 0.50,
+    ecoimpactscore: 0.80,
+    notes: "Target engagement index band enforced by Reality.os policies"
+  },
+  {
+    project_id: "BioscaleReality01",
+    stage: "Orchestration",
+    metric: "EcoKarmaPerDay",
+    unit: "nanobytes",
+    value: 7500000.0,
+    baseline: 0.0,
+    ecoimpactscore: 0.87,
+    notes: "NanoKarmaBytes/day from energy savings + healthy-behavior metrics"
+  }
+];
