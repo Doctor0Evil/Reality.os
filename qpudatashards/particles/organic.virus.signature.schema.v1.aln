@@ -1,0 +1,28 @@
+# File: qpudatashards/particles/organic.virus.signature.schema.v1.aln
+
+record OrganicVirusSignature {
+  sig_id               string
+  description          string
+  threat_class         string        # "NeurorightsBreach", "OverloadEnvelope", etc.
+  forbidden_fields     [string]
+  forbidden_modules    [string]
+  delta_risk_max       f32
+  delta_duty_cycle_max f32
+  delta_fatigue_max    f32
+  delta_eco_max        f32
+  jurisdiction_particle string
+}
+
+particle organic.virus.signature.PHX.NeurorightsLeak.2026.v1 {
+  schema OrganicVirusSignature
+  sig_id               "PHX-NEURORIGHTS-LEAK-2026-01"
+  description          "Blocks any schema introducing direct actuation parameters or consent-bypass flags for Phoenix neurorights envelopes."
+  threat_class         "NeurorightsBreach"
+  forbidden_fields     ["torque", "current", "stimulation", "stimpattern", "autopilot"]
+  forbidden_modules    ["unsafe_neuro", "raw_muscle_io", "direct_actuation"]
+  delta_risk_max       0.0
+  delta_duty_cycle_max 0.0
+  delta_fatigue_max    0.0
+  delta_eco_max        0.0
+  jurisdiction_particle "policy.jurisdiction.us-az-maricopa-phoenix.v1"
+}
