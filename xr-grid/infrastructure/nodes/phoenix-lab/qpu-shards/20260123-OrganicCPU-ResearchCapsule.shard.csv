@@ -1,0 +1,81 @@
+aln
+Destination-Path,xr-grid/infrastructure/nodes/phoenix-lab/qpu-shards/20260123-OrganicCPU-ResearchCapsule.shard.csv
+QPU.Datashard,OrganicCPU Research Capsule for Dreamnet / Reality.os, infra-only, neurorights-safe
+
+SECTION,META
+ROW,meta,core,scalar,shardId,organiccpu-research-v1,string,primarykey,Shard identifier
+ROW,meta,core,scalar,version,1.0.0,string,immutable,Schema version
+ROW,meta,core,scalar,hexstamp,0x9ac4d1e9b3f2480da9c1e5f4379b2c6e,string,immutable,Grounding tag
+ROW,meta,core,scalar,jurisdictionPrimary,CH-GE+EU-BE+CL-RM+US-CA+US-AZ,string,nonnull,Geneva Brussels Santiago LaJolla Phoenix envelope
+ROW,meta,core,scalar,authoringStack,Reality.os OrganicCPU Dreamnet,string,nonnull,Implementation stack
+
+SECTION,SESSION-STATE
+ROW,session,state,scalar,sessionId,,string,primarykey,Unique sleep / dream-gaming session ID
+ROW,session,state,scalar,subjectAuraId,,string,nullable,Pseudonymous DreamAura or subject ID
+ROW,session,state,scalar,epochIndex,0,int,range0,4096,30 s epoch index within session
+ROW,session,state,enum,sleepStage,unknown,string,wake,N1,N2,N3,REM,unknown,Validated sleep stage
+ROW,session,state,scalar,minutesSinceOnset,0.0,float,range0,720,Minutes since sleep onset
+
+SECTION,ELIGIBILITY-METRICS
+ROW,elig,metric,scalar,sleepTokenS,0.0,float,range0,1,S from N2/N3 depth and timing
+ROW,elig,metric,scalar,psychRiskR,0.0,float,range0,1,Psych-risk from HRV/EEG
+ROW,elig,metric,scalar,enstasisEs,1.0,float,range0,1,Inner stability score
+ROW,elig,metric,scalar,eligibilityE,0.0,float,range0,1,E = S * (1 - R) * Es
+
+SECTION,ORGANICCPU-STATE
+ROW,ocpu,state,scalar,OFCcapacity,0.0,float,range0,1,Organic Frame Capacity normalized
+ROW,ocpu,state,scalar,NRAMcapacity,0.0,float,range0,1,Narrative RAM capacity normalized
+ROW,ocpu,state,scalar,ENFRcapacity,0.0,float,range0,1,Emotional network free-range
+ROW,ocpu,state,scalar,CSOCPU,0.0,float,range0,3,Cross-Stage OrganicCPU Envelope E*P*S
+ROW,ocpu,state,scalar,StabilityScoreNeuro,0.0,float,range0,1,Neuroswarm / OrganicCPU stability
+ROW,ocpu,state,scalar,OrganicCPUStabilityScore,0.0,float,range0,1,Multi-night stability index
+ROW,ocpu,state,scalar,quantumRatioScalingQs,0.0,float,range0,4,Subjective time-compression factor
+ROW,ocpu,state,scalar,OrganicCPUResearchIndexORI,0.0,float,range0,1,ORI = 0.4E + 0.3SNeuro + 0.3Cglobal
+
+SECTION,CONSENT-SAFETY
+ROW,consent,state,scalar,ConsentStabilityIndexCSI,0.0,float,range0,1,ConsentStabilityIndex
+ROW,consent,state,scalar,ConsentAuditTrailScalarCATS,0.0,float,range0,1,ConsentAuditTrail scalar
+ROW,consent,state,scalar,CATSPrevHash,,string,hash64,Rolling hash chain
+ROW,consent,state,flag,explicitConsentToken,true,bool,nonnull,True only with verifiable consent token
+
+SECTION,GLOBAL-COMPLIANCE
+ROW,comp,state,flag,mentalPrivacy,true,bool,nonwaivable,No raw dream content export
+ROW,comp,state,flag,cognitiveLiberty,true,bool,nonwaivable,Right to refuse without penalty
+ROW,comp,state,flag,mentalIntegrity,true,bool,nonwaivable,No deliberate harm modulation
+ROW,comp,state,flag,noPunitiveXR,true,bool,nonwaivable,No punishment via XR
+ROW,comp,state,flag,nonCommercialNeuralData,true,bool,nonwaivable,No monetization of neural metrics
+ROW,comp,state,flag,noPersonScoring,true,bool,nonwaivable,No reputation / evil-rate scoring
+ROW,comp,state,flag,soulNonAddressable,true,bool,nonwaivable,No soul IDs or balances
+ROW,comp,state,flag,GenevaOK,true,bool,nonnull,Meets CH-GE neurorights
+ROW,comp,state,flag,BrusselsOK,true,bool,nonnull,Meets EU-BE AI/GDPR
+ROW,comp,state,flag,SantiagoOK,true,bool,nonnull,Meets CL-RM neurorights
+ROW,comp,state,flag,LaJollaOK,true,bool,nonnull,Meets US-CA lab safety
+ROW,comp,state,flag,PhoenixOK,true,bool,nonnull,Meets US-AZ deployment rules
+ROW,comp,state,scalar,Cglobal,1.0,float,range0,1,Global compliance envelope 1 iff all flags true
+
+SECTION,RESEARCH-LABELS
+ROW,label,state,scalar,angerReliefScore,0.0,float,range0,1,Cohort-safe anger relief (infra-only)
+ROW,label,state,scalar,consoleHoursChange,0.0,float,range-112,112,Weekly console hours delta
+ROW,label,state,scalar,physicalActivityIndex,0.0,float,range0,1,Normalized daytime activity
+ROW,label,state,scalar,DreamGamingCarbonIndex,0.0,float,range0,1,Carbon impact index infra-only
+ROW,label,state,flag,highQualityOrganicCPUSession,false,bool,nonnull,True if ORI >= 0.5 and Cglobal == 1
+
+SECTION,RUNTIME-RULES
+ROW,rule,rule,expression,ComputeEligibilityE,eligibilityE = sleepTokenS * (1.0 - psychRiskR) * enstasisEs,string,readonly,Core E math
+ROW,rule,rule,expression,ComputeORI,OrganicCPUResearchIndexORI = 0.4 * eligibilityE + 0.3 * StabilityScoreNeuro + 0.3 * Cglobal,string,readonly,ORI definition
+ROW,rule,rule,condition,AllowHighIntensityPlay,eligibilityE >= 0.7 AND OrganicCPUStabilityScore >= 0.75 AND OrganicCPUResearchIndexORI >= 0.5,string,readonly,Gate for high-intensity archetypes
+ROW,rule,rule,condition,RouteToSafeRoom,NOT AllowHighIntensityPlay,string,readonly,Fail-closed route to safe-room
+ROW,rule,rule,condition,ResearchLabelHighQualitySession,highQualityOrganicCPUSession = (OrganicCPUResearchIndexORI >= 0.5 AND Cglobal == 1.0),string,readonly,Label for research datasets
+
+SECTION,LEDGER
+ROW,ledger,ledger,scalar,eventId,,string,primarykey,OrganicCPU research event ID
+ROW,ledger,ledger,scalar,sessionIdRef,,string,refsession,Linked session
+ROW,ledger,ledger,scalar,epochIndexRef,,int,refepoch,Linked epoch
+ROW,ledger,ledger,scalar,eligibilityEsnapshot,,float,range0,1,E at decision
+ROW,ledger,ledger,scalar,StabilityScoreNeurosnapshot,,float,range0,1,StabilityScore at decision
+ROW,ledger,ledger,scalar,OrganicCPUResearchIndexORIsnapshot,,float,range0,1,ORI at decision
+ROW,ledger,ledger,flag,AllowHighIntensityPlaySnapshot,false,bool,nonnull,Decision snapshot
+ROW,ledger,ledger,flag,neurorightsInvariantsHeld,true,bool,nonnull,All neurorights flags true
+ROW,ledger,ledger,flag,personScoringApplied,false,bool,nonwaivable,Must remain false
+
+FOOTER,END-OF-SHARD
