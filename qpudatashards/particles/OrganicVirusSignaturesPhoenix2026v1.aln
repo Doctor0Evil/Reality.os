@@ -1,0 +1,12 @@
+# File: qpudatashards/particles/OrganicVirusSignaturesPhoenix2026v1.aln
+
+particle organic.virus.signature.bundle.PHX.2026.v1 {
+  bundle_id   "OrganicVirusSignaturesPhoenix2026v1"
+  jurisdiction "policy.jurisdiction.us-az-maricopa-phoenix.v1"
+
+  signatures [
+    "organic.virus.signature.PHX.NeurorightsLeak.2026.v1",
+    "organic.virus.signature.PHX.EcoRegression.2026.v1",
+    "organic.virus.signature.PHX.OverloadEnvelope.2026.v1"
+  ]
+}
