@@ -1,0 +1,28 @@
+name: Neurorights Firewall & Router Compliance
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  neurorights:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enforce neurorights-bound router entries
+        run: |
+          if grep -R "pub async fn handle" -n crates/cyber-retrieval-router/src \
+             | grep -v "NeurorightsBound<PromptEnvelope, NeurorightsEnvelope>"; then
+            echo "ERROR: Router handle functions must accept NeurorightsBound<PromptEnvelope, NeurorightsEnvelope>."
+            exit 1
+          fi
+          echo "NeurorightsBound router check passed."
+
+      - name: Enforce RoH ceiling
+        run: |
+          if grep -R "MAX_RISK_OF_HARM" -n | grep -v "0.3"; then
+            echo "ERROR: MAX_RISK_OF_HARM must be 0.3 for Cyber-Retrieval."
+            exit 1
+          fi
+          echo "Risk-of-Harm ceiling check passed."
