@@ -1,0 +1,39 @@
+destination-path,xr-grid.agent-dev-tunnels.v2.aln
+QPU.Datashard,Agentic-AI dev tunnels for Mistral, Qwen, Perplexity, Grok
+path,entitytype,field,key,value,datatype,constraints,notes
+SECTION,AGENT-PROFILES
+ROW,agent,profile,scalar,agentid,mistral,string,primarykey,Mistral helper ID
+ROW,agent,profile,scalar,agentid,qwen,string,primarykey,Qwen helper ID
+ROW,agent,profile,scalar,agentid,perplexity,string,primarykey,Perplexity helper ID
+ROW,agent,profile,scalar,agentid,grok,string,primarykey,Grok helper ID
+ROW,agent,profile,enum,agentclass,research,string,research,levelsuggest,analytics,Agent role
+ROW,agent,profile,enum,accessscope,stateonly,string,stateonly,metrics-only,Whitelisted scope
+ROW,agent,profile,flag,writeallowed,false,bool,nonwaivable,No direct writes by agents
+ROW,agent,profile,flag,seedreamcontent,false,bool,nonwaivable,No dream narratives or imagery
+ROW,agent,profile,flag,seeidentity,minimal,bool,nonwaivable,Only hashed or redacted IDs
+
+SECTION,TUNNEL-ENDPOINTS
+ROW,tunnel,ws,scalar,wsurl,mistral,wss://dev-xrgrid.phx/mistral,string,immutable,Internal only
+ROW,tunnel,ws,scalar,wsurl,qwen,wss://dev-xrgrid.phx/qwen,string,immutable,Internal only
+ROW,tunnel,ws,scalar,wsurl,perplexity,wss://dev-xrgrid.phx/perplexity,string,immutable,Internal only
+ROW,tunnel,ws,scalar,wsurl,grok,wss://dev-xrgrid.phx/grok,string,immutable,Internal only
+ROW,tunnel,ws,enum,tunnellocality,onprem,string,onprem,edgenode,cloudlab,Location constraint
+ROW,tunnel,ws,enum,agentroutingprofile,researchonly,string,researchonly,levelsuggestion,analytics,Routing profile
+
+SECTION,EXPORT-SCHEMA
+ROW,export,schema,scalar,fieldsetid,statemetrics,string,primarykey,Whitelisted field set
+ROW,export,schema,scalar,fields,"sleepstage,psychrisklevel,psychriskscore,dreammode,player_state,quantum_roaming_allowed,infraComplianceScore,nodeid",string,immutable,State-only metrics
+
+SECTION,RUNTIME-RULES
+ROW,rule,rule,condition,denyPhenomenologyExport,"forbidop if target in dreamtext,dreamimage,innerspeech,phenomenologytag",string,readonly,Block raw dream content
+ROW,rule,rule,condition,denySoulKarmaExport,"forbidop if target in soul,karma,karmascore,soulscore",string,readonly,No soul/karma exposure
+ROW,rule,rule,condition,bindAgentsToStateOnly,"allowexport if field in statemetrics and agent.accessscope == stateonly",string,readonly,Agents see state metrics only
+ROW,rule,rule,condition,blockRogueNodes,"denyexport if roguestate == rogue",string,readonly,Rogue nodes isolated from all agents
+
+SECTION,NEURORIGHTS-GUARDS
+ROW,guard,policy,flag,mentalprivacy,true,bool,nonwaivable,No mental content export
+ROW,guard,policy,flag,cognitiveliberty,true,bool,nonwaivable,No coercive AI proposals
+ROW,guard,policy,flag,noncommercialneuraldata,true,bool,nonwaivable,No trade of neural or dream data
+ROW,guard,policy,flag,nopunitivexr,true,bool,nonwaivable,No AI for punishment or scoring
+ROW,guard,policy,flag,soulnonaddressable,true,bool,nonwaivable,Soul never modeled or routed
+FOOTER,END-OF-SHARD
