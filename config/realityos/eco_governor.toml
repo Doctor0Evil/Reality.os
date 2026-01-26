@@ -1,0 +1,14 @@
+RealityOS EcoGovernor configuration
+stakeholder_did = "did:ion:EiD8J2b3K8k9Q8x9L7m2n4p1q5r6s7t8u9v0w1x2y3z4A5B6C7D8E9F0"
+aln_shard_path = "qpudatashards/particles/eco_upgrade_profile_v1.aln"
+
+[upgrade_policy]
+min_eco_tokens_for_upgrade = 200
+min_energy_reduction_pct = 20.0
+min_clarity_for_heavy = 0.60
+max_stress_score = 0.45
+
+Environment-specific configuration
+[environment]
+mode = "production" # "development" or "production"
+enable_did_verification = true
