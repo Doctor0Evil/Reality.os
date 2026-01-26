@@ -1,0 +1,32 @@
+text
+destination-path qpudatashards/particles/biophysical_missing_layers_profile.aln
+version 1.0
+schema biospectre.missinglayers
+hostid bostrom18sd2ujv24ual9c9pshtxys6j8knh6xaead9ye7
+sessionutc 2026-01-25T23:40:00Z
+
+layers
+  neural_cognitive:
+    metrics "SN1,SN2,SN3,S?,task_outcomes"
+    status "partially_mapped"
+  bio_eco:
+    metrics "ecoFLOPs,ecoenergynj,metabolic_proxies"
+    status "sparse_longitudinal_data"
+  residual_microstates:
+    metrics "S?,spectral_clusters,transition_graphs"
+    status "ontology_incomplete"
+  dream_semantics:
+    metrics "dreamkind,emotionalsalience,behavioral_scores"
+    status "low_sample_size"
+  orchestration_governance:
+    metrics "virtualnodes,quotas,energyreductionpct,rights_flags"
+    status "policy_underdefined"
+
+ecoimpact
+  expecteddevicehourssavedperyear 20.0
+  expectedenergyreductionpct 25.0
+
+provenance
+  processinglanguage "Rust+ALN"
+  ecoalignment "software-only, reduced hardware churn"
+  proofhex "0xM155ING"
