@@ -1,0 +1,5 @@
+aln,xr.chat.grammar.v1
+metric,domain,module,op,threshold,unit,source
+hallucination_risk,xr,xr.chat.guard,max,0.3,fraction,file33
+manipulation_risk,xr,xr.chat.guard,max,0.2,fraction,file33
+privacy_risk,xr,xr.chat.guard,max,0.2,fraction,file33
