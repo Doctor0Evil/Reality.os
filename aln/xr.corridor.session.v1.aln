@@ -1,0 +1,4 @@
+aln,xr.corridor.session.v1
+metric,domain,module,op,threshold,unit,source
+xr_risk_margin,host,xr.corridor.guard,min,0.05,arb,file32
+session_id,xr,session,,,"",file32
