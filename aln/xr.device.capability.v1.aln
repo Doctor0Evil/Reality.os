@@ -1,0 +1,5 @@
+aln,xr.device.capability.v1
+metric,domain,module,op,threshold,unit,source
+display_nits,xrdevice,xr.device.guard,max,1000.0,nits,file33
+haptics_band_hz,xrdevice,xr.device.guard,max,250.0,Hz,file33
+xr_safe,cargoenv,xr.env.guard,eq,1,bool,file32
