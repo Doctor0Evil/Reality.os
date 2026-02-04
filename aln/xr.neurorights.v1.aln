@@ -1,0 +1,6 @@
+aln,xr.neurorights.v1
+metric,domain,module,op,threshold,unit,source
+autonomy_weight,xr,neurorights.shard,,0.4,arb,file32
+covert_mod_weight,xr,neurorights.shard,,0.4,arb,file32
+sleep_safety_weight,xr,neurorights.shard,,0.2,arb,file32
+max_weight_sum,xr,neurorights.guard,max,1.0,arb,file32
