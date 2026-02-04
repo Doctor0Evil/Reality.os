@@ -1,0 +1,3 @@
+aln,xr.guard.metrics.v1
+metric,domain,module,op,threshold,unit,source
+xr_guard_denied_ratio,xr,xr.guard.monitor,max,0.25,fraction,file32
