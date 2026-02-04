@@ -1,0 +1,5 @@
+aln,xr.multimodal.budget.v1
+metric,domain,module,op,threshold,unit,source
+host_limit_joules,host,xr.budget.guard,,72000.0,J,file32
+xr_visual_joules,host,xr.budget.guard,max,24000.0,J,file32
+bci_stim_joules,host,xr.budget.guard,max,8000.0,J,file32
