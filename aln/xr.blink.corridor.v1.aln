@@ -1,0 +1,4 @@
+aln,xr.blink.corridor.v1
+metric,domain,module,op,threshold,unit,source
+blink_z,xr,xr.blink.guard,max,2.0,SD,file32
+cog_load_idx,host,xr.blink.guard,max,0.7,fraction,file32
