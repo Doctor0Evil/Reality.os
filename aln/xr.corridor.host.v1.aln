@@ -1,0 +1,8 @@
+aln,xr.corridor.host.v1
+metric,domain,module,op,threshold,unit,source
+xr_risk,host,xr.corridor.guard,,0.3,arb,file32
+hrv_ms,host,xr.corridor.guard,min,40.0,ms,file32
+thermo_c,host,xr.corridor.guard,max,38.0,C,file32
+duty_fraction,host,xr.corridor.guard,max,0.35,fraction,file32
+fov_deg,xrdevice,xr.corridor.guard,max,110.0,deg,file33
+fps,xrdevice,xr.corridor.guard,min,72.0,Hz,file33
