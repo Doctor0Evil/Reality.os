@@ -1,0 +1,17 @@
+aln RealityOS5DLifeforceSchema2026v1
+
+record Lifeforce5DVoxel
+  string  host_id
+  string  context_id           # app/scene/skill
+  float   t_start_seconds
+  float   t_end_seconds
+  float   x
+  float   y
+  float   z
+  float   thermal_distance     # 0..1, distance from safe thermal band
+  float   molecular_balance    # 0..1, 1 = optimal metabolic/inflammatory balance
+  float   fatigue_index        # 0..1, from existing FatigueIndex
+  float   risk_score           # 0..1, from MuscleSafetyEnvelope R
+  float   eco_impact_score     # 0..1, from EcoImpactScore
+  float   lifeforce_index      # 0..1 composite
+  string  notes
