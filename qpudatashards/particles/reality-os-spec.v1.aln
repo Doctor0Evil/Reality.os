@@ -1,0 +1,32 @@
+aln
+meta
+  specid        reality-os-spec.v1
+  version       1.0.0
+  subjectid     bostrom18sd2ujv24ual9c9pshtxys6j8knh6xaead9ye7
+  description   Reality.os service spec bound to Bostrom sovereign shell.
+endmeta
+
+service
+  name          RealityOS
+  mode          advisory_only          # No direct actuation
+  tsafekernel   policies/bostrom-tsafe-v1.aln
+  donutloop     logs/donutloop.aln
+  rohmodel      qpudatashards/particles/bostrom-rohmodel-v1.rohmodel.aln
+  neurorights   policies/bostrom-neurorights-v1.neurorights.json
+endservice
+
+endpoints
+  - id          xr-dashboard
+    kind        visualization
+    readonly    true
+    description XR overlays for BioState, RoH, K, D, DW, nanopolygons.
+  - id          automagic-editor
+    kind        suggestion_only
+    readonly    true
+    description Suggests edits to Rust/ALN files under SMART, never writes.
+endpoints
+
+invariants
+  roh_ceiling_03        rohmodel.rohceiling == 0.30
+  advisory_only_mode    service.mode == "advisory_only"
+endinvariants
