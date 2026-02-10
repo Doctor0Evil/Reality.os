@@ -1,0 +1,57 @@
+aln
+file xr-dev.policy-newrow-shark.v1.aln
+QPU.Datashard,NewRow-Shark infra-only XR design policy for Reality.os
+
+SECTION,META
+ROW,meta,shardid,NEWROW-SHARK-POLICY-V1,string,primarykey,NewRow-Shark policy shard
+ROW,meta,role,design-only,string,immutable,Non-actuating XR design augmentation layer
+ROW,meta,scope,infra,string,immutable,Infra-only use by level designers XR researchers eco-architects
+ROW,meta,playerFacingAllowed,false,bool,nonwaivable,Must never run in live player HUD or dream-state
+
+SECTION,DOMAIN-WHITELIST
+ROW,domain,allowed,ALIENGAME_RULE,bool,nonwaivable,Allow rule-graph edits only
+ROW,domain,allowed,SCENE_VARIANT,bool,nonwaivable,Allow scene parameter variants only
+ROW,domain,allowed,NPC_DIALOG_TEMPLATE,bool,nonwaivable,Allow dialog template authoring only
+ROW,domain,allowed,LAB_CAPLABBENCH_CONFIG,bool,nonwaivable,Allow simulation configs only
+
+SECTION,DOMAIN-BLACKLIST
+ROW,domain,forbidden,CAP_STATE,bool,nonwaivable,No capability state reads or writes
+ROW,domain,forbidden,CONSENT_STATE,bool,nonwaivable,No consent vectors or CSI access
+ROW,domain,forbidden,QPU_SAFETY,bool,nonwaivable,No safety gate parameters or E,S,R,Es
+ROW,domain,forbidden,WALLET,bool,nonwaivable,No token or balance schemas
+ROW,domain,forbidden,HUD_LIVE_OVERLAY,bool,nonwaivable,No runtime HUD or dream overlays
+
+SECTION,ALIEN-GPT-INTEGRATION
+ROW,alien_gpt,mode,proposal_upstream_only,string,immutable,Only accept proposals no direct actuation
+ROW,alien_gpt,neurorightsGateRequired,true,bool,nonwaivable,Must pass Alien_GPT neurorights eligibility
+ROW,alien_gpt,allowedOutputSchemas,ALIENGAME_RULE,SCENE_VARIANT,NPC_DIALOG_TEMPLATE,string,immutable,Schema-limited proposals
+ROW,alien_gpt,blockedOutputSchemas,CAP_STATE,CONSENT_STATE,QPU_SAFETY,WALLET,HUD_LIVE_OVERLAY,string,immutable,Hard block safety/consent/wallet/HUD
+
+SECTION,NON-ACTUATION-GUARDS
+ROW,guard,flag,mayMutateRuntimeState,false,bool,nonwaivable,No writes to live runtime shards
+ROW,guard,flag,mayScheduleXRJob,false,bool,nonwaivable,No direct scheduling of XR jobs
+ROW,guard,flag,mayBindBCIChannel,false,bool,nonwaivable,No BCI or dream-state bindings
+ROW,guard,flag,mustOperateOnSnapshotsOnly,true,bool,nonwaivable,Only on offline design snapshots
+
+SECTION,FORMAL-MODEL
+ROW,model,logic,NewRowInvariant,string,immutable,
+"forall op. op.source = NEWROW-SHARK -> 
+  op.domain in {ALIENGAME_RULE,SCENE_VARIANT,NPC_DIALOG_TEMPLATE,LAB_CAPLABBENCH_CONFIG}
+  and op.domain not in {CAP_STATE,CONSENT_STATE,QPU_SAFETY,WALLET,HUD_LIVE_OVERLAY}"
+ROW,model,tool,TLAplusSpecId,string,nullable,Optional TLA+ or Coq spec ID when available
+ROW,model,proofStatus,unproven,string,planned,in-progress,verified,Current formal verification status
+
+SECTION,NEURORIGHTS-GUARDS
+ROW,rights,mentalPrivacy,true,bool,nonwaivable,No dream content or inner speech fields in scope
+ROW,rights,cognitiveLiberty,true,bool,nonwaivable,Cannot coerce designers or players via content
+ROW,rights,nonPunitiveXR,true,bool,nonwaivable,No punitive or karmic scoring logic
+ROW,rights,soulNonAddressable,true,bool,nonwaivable,No soul or belief fields
+
+SECTION,LEDGER
+ROW,ledger,eventid,,string,primarykey,Design policy event ID
+ROW,ledger,eventtype,,string,newrow-edit,newrow-apply-sim,newrow-policy-violation,Event type
+ROW,ledger,subjectid,,string,nullable,Designer or lab-rig ID infra-only
+ROW,ledger,domainTouched,,string,nullable,Target domain for op
+ROW,ledger,blockedByPolicy,false,bool,nonnull,True when guard prevented op
+ROW,ledger,timestampUnixMs,0,int,0,Event timestamp
+FOOTER,END-OF-SHARD
