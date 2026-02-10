@@ -1,0 +1,43 @@
+path,entitytype,field,key,value,datatype,constraints,notes
+
+SECTION,META
+ROW,meta,scalar,shardid,newrow-shark-policy-v1,string,primarykey,Shard identifier
+ROW,meta,scalar,version,1.0.0,string,immutable,Semantic version
+ROW,meta,scalar,authoringstack,realityos.capmodelonly,string,nonnull,Tooling origin
+ROW,meta,scalar,jurisdictionprimary,CH-GE|EU-BE|CL-RM|US-CA|US-AZ,string,nonnull,Primary governance set
+
+SECTION,DOMAIN-WHITELIST
+ROW,domain,scalar,allow_domains,ALIENGAME_RULE|SCENE_VARIANT|NPC_DIALOG_TEMPLATE,string,immutable,Closed set of permitted schemas
+ROW,domain,scalar,deny_states,CAP_STATE|CONSENT_STATE|QPU_SAFETY|WALLET|HUD,string,immutable,Closed set of forbidden domains
+ROW,domain,scalar,max_bindings_per_tx,128,int,range1,1024,Defensive cap on bound rows
+
+SECTION,SCHEMA-MAPPINGS
+ROW,schema,map,scalar,alienschema_id,ALIENGAME_RULE.v3.1,string,nonnull,Versioned rule schema id
+ROW,schema,map,scalar,sceneschema_id,SCENE_VARIANT.v2.4.3,string,nonnull,Versioned scene schema id
+ROW,schema,map,scalar,npcdialogs_schema_id,NPC_DIALOG_TEMPLATE.v3.0,string,nonnull,Versioned NPC dialog schema id
+
+SECTION,RUNTIME-RULES
+ROW,rule,rule,condition,denyCapConsentTransition,"forbidtransition if target_domain in CAP_STATE,CONSENT_STATE,QPU_SAFETY,WALLET,HUD",string,readonly,Hard no-transition invariant
+ROW,rule,rule,condition,denyStateSymbolBinding,"forbidbind if symbol_prefix in HUD_,WALLET_,QPU_,CAP_,CONSENT_",string,readonly,Blocks symbol table leaks
+ROW,rule,rule,condition,bindOnlyWhitelistedSchemas,"allowbind if source_domain in ALIENGAME_RULE,SCENE_VARIANT,NPC_DIALOG_TEMPLATE",string,readonly,Whitelist enforcement
+ROW,rule,rule,condition,denyNonDeclarativeOps,"forbidop if op_kind in io,network,fs,device,actuation",string,readonly,Declarative-only constraint
+ROW,rule,rule,expression,computePolicyCompliance,"complianceC 1 - V/T",string,readonly,"V violations, T total checks; see research math"
+
+SECTION,NEURORIGHTS-GUARDS
+ROW,rights,policy,flag,mentalprivacy,true,bool,nonwaivable,No raw dreamcontent or innerspeech here
+ROW,rights,policy,flag,cognitiveliberty,true,bool,nonwaivable,No coercive gating by NewRow-Shark
+ROW,rights,policy,flag,noncommercialneuraldata,true,bool,nonwaivable,No monetization of enforcement telemetry
+ROW,rights,policy,flag,nopunitivexr,true,bool,nonwaivable,No punishment or scoring from violations
+ROW,rights,policy,flag,soulnonaddressable,true,bool,nonwaivable,No soul, karma, or belief routing
+
+SECTION,LEDGER
+ROW,ledger,ledger,scalar,eventid,,string,primarykey,Unique enforcement event id
+ROW,ledger,ledger,scalar,txid,,string,nonnull,Capability dispatch transaction id
+ROW,ledger,ledger,enum,eventtype,,string,load-denied,bind-denied,transition-denied,op-denied,Enforcement event class
+ROW,ledger,ledger,scalar,source_domain,,string,nullable,Domain of originating shard
+ROW,ledger,ledger,scalar,target_domain,,string,nullable,Domain of intended sink
+ROW,ledger,ledger,scalar,violationsnapshot,,int,range0,4096,Violations observed in tx
+ROW,ledger,ledger,scalar,complianceCsnapshot,,float,range0,1,Compliance C at event
+ROW,ledger,ledger,flag,neurorightsinvariantsheld,true,bool,nonnull,Must remain true or surface critical fault
+
+FOOTER,END-OF-SHARD
