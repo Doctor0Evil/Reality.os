@@ -1,0 +1,12 @@
+SECTION,DOMAIN
+ROW,domain,allow_domains,scalar,,string,ALIENGAME_RULE,SCENE_VARIANT,NPC_DIALOG_TEMPLATE
+SECTION,DENY-STATES
+ROW,deny,state,scalar,deny_states,CAP_STATE|CONSENT_STATE|QPU_SAFETY|WALLET|HUD,text,nonwaivable
+
+SECTION,RUNTIME-RULES
+ROW,rule,rule,condition,denyCapConsentTransition,
+"forbidtransition if target_domain in CAP_STATE,CONSENT_STATE,QPU_SAFETY,WALLET,HUD",string,readonly
+ROW,rule,rule,condition,denySymbolBinding,
+"forbidbind if symbol_prefix in HUD_,WALLET_,QPU_,CAP_,CONSENT_",string,readonly
+ROW,rule,rule,condition,bindOnlyWhitelistedSchemas,
+"allowbind if source_domain in ALIENGAME_RULE,SCENE_VARIANT,NPC_DIALOG_TEMPLATE",string,readonly
