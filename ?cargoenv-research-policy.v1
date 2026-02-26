@@ -1,0 +1,10 @@
+?cargoenv-research-policy.v1
+  compatibility  extend-with-versioned-fields
+  macro_scope    host-and-distributed-corridors
+  env_authority  descriptor-with-aln-overrides
+  evidence       a1f3c9b2,4be79d01,9cd4a7e8,2f8c6b44,7e1da2ff,
+                 5b93e0c3,d0174aac,6ac2f9d9,c4e61b20,8f09d5ee
+  scope          CargoEnvDescriptor, evolve!, bioscaleupgrade!, neuro.print!
+  downgradetrigger
+    any-bioscale-or-corridor-violation
+    OR env-override-without-ALN
