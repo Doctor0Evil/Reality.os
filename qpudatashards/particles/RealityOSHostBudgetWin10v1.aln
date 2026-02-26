@@ -1,0 +1,24 @@
+aln qpudatashard RealityOSHostBudgetWin10v1
+
+schema HostBudgetWin10Record
+  string   host_id
+  string   session_id
+  uint64   timestamp_ms
+
+  float    cpu_duty_cycle_1s        # [0,1]
+  float    roh_score                # [0,1]
+  float    etw_overhead             # [0,1]
+  float    job_cpu_cap              # [0,1]
+  float    fatigue_index            # [0,1]
+
+  string   privacy_scope            # "gdpr_eu" | "hipaa_us" | "appi_jp" | "other"
+  bool     gdpr_region
+  bool     hipaa_phi_scope
+  uint32   appi_retention_days
+
+  float    eco_impact_score         # [0,1]
+  float    avg_daily_device_hours_reduced
+  float    annual_energy_saved_kwh  # per user
+
+  string   evidence_tags[]          # DEFAULTBIOPHYSEVIDENCE hex-tags, e.g., "8f09d5ee"
+end
