@@ -1,0 +1,38 @@
+aln qpudatashard BioscaleNeuromotorEco2026v1
+
+metric DecoderAccuracy {
+    value: 0.91
+    ci95_low: 0.88
+    ci95_high: 0.94
+    task: "sEMG_multi_gesture"
+}
+
+metric EnergyPerIntent_mJ {
+    ann_baseline: 0.80
+    snn_model: 0.12
+    reduction_factor: 6.67
+}
+
+metric Latency_ms {
+    median: 25.0
+    p95: 40.0
+}
+
+metric DutyCycleEnvelope {
+    dmax_10min: 0.40
+    fwarn: 0.25
+    fstop: 0.35
+    roh_ceiling: 0.30
+}
+
+metric EcoHelpVector {
+    avg_daily_device_hours_reduced: 2.0
+    annual_energy_saved_kwh_per_user: 45.0
+    eco_impact_score: 0.78
+}
+
+metric UXHealth {
+    healthy_engagement_band_min: 0.35
+    healthy_engagement_band_max: 0.70
+    fatigue_index_mean: 0.18
+}
