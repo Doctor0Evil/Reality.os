@@ -1,0 +1,275 @@
+/* Mode Switcher */
+.mode-switcher {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.mode-btn {
+  padding: 1rem;
+  border: 2px solid #ecf0f1;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  border-color: #3498db;
+}
+
+.mode-btn.active {
+  border-color: #27ae60;
+  background: #e8f8f5;
+}
+
+.mode-btn .active-indicator {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+/* Sensory Overlay */
+.sensory-overlay {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.overlay-controls {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Cognitive Load Dial */
+.cognitive-load-dial {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.dial-container {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.dial-btn {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid #ecf0f1;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  position: relative;
+}
+
+.dial-btn.active {
+  border-color: #3498db;
+  background: #ebf5fb;
+}
+
+.dial-btn .active-dot {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #3498db;
+}
+
+/* Accessibility */
+.accessibility-settings {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.a11y-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.a11y-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+/* Privacy Stealth */
+.privacy-stealth {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 4px solid #95a5a6;
+}
+
+.privacy-stealth.active {
+  border-left-color: #e74c3c;
+  background: #fdedec;
+}
+
+.stealth-toggle {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 1rem 0;
+}
+
+.stealth-toggle.on {
+  background: #e74c3c;
+  color: white;
+}
+
+.stealth-toggle.off {
+  background: #95a5a6;
+  color: white;
+}
+
+/* Focus Corridor */
+.focus-corridor {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.btn-add {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.windows-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.window-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Mentor Link */
+.mentor-apprentice {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.link-form {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.link-form input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+}
+
+.relationships-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.relationship-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.role-badge {
+  background: #9b59b6;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.scope-tags {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.scope-tags .tag {
+  background: #ecf0f1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+/* Global Accessibility Classes */
+body.high-contrast {
+  background: #000;
+  color: #fff;
+}
+
+body.dyslexia-font {
+  font-family: 'OpenDyslexic', sans-serif;
+}
+
+body.reduced-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Utility */
+.info-text {
+  color: #16a085;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.warning-text {
+  color: #e74c3c;
+  font-weight: 600;
+  margin: 0.5rem 0 0 0;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+}
