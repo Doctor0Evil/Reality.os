@@ -1,0 +1,10 @@
+flowchart LR
+  A[User Action] --> B{SovereigntyCore}
+  B -->|Approved| C[CozoDB Cache]
+  B -->|Denied| D[Audit Log]
+  C --> E{ALN Validator}
+  E -->|Valid| F[ROW Ledger]
+  E -->|Invalid| G[Rejected]
+  F --> H[Immutable Record]
+  D --> H
+  G --> D
