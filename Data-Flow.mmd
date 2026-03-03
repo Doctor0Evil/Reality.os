@@ -1,0 +1,19 @@
+sequenceDiagram
+  participant User as Augmented Citizen
+  participant Portal as Reality.OS Portal
+  participant Cozo as CozoDB Local
+  participant SC as SovereigntyCore
+  participant ALN as ALN Mainnet
+
+  User->>Portal: Click "BCI Calibration"
+  Portal->>Cozo: Query channel status
+  Cozo-->>Portal: Return channel data
+  Portal->>SC: Request corridor evaluation
+  SC->>SC: Check RoH envelopes
+  SC-->>Portal: Approval granted
+  Portal->>SC: Submit calibration request
+  SC->>ALN: Anchor to ROW ledger
+  ALN-->>SC: Return transaction hash
+  SC->>Cozo: Store in transaction table
+  Cozo-->>Portal: Confirmation
+  Portal->>User: Display success
