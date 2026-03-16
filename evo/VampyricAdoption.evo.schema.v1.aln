@@ -1,0 +1,74 @@
+section,field,datatype,domain,required,description
+META,schemaid,string,,true,VampyricAdoption.evo.v1
+META,version,string,,true,1.0.0
+META,createdutc,timestamp,,true,Schema creation time UTC
+META,hexstamp,string,,true,Schema-level hex-tag for audits
+
+HOST,host_did,string,,true,bostrom18sd2ujv24ual9c9pshtxys6j8knh6xaead9ye7
+HOST,primary_bostrom_addr,string,,true,Primary Bostrom address
+HOST,alt_bostrom_addr,string,,false,Alternate secure address
+HOST,bi_commitment,string,,true,Hex commitment to BrainIdentity state
+HOST,bi_epoch,u32,0,4294967295,true,BI epoch at consent time
+
+EVOLUTION,evo_id,string,,true,Opaque EvolutionPoint ID
+EVOLUTION,evo_kind,string,,true,VAMPYRIC_ADOPTION
+EVOLUTION,created_utc,timestamp,,true,Consent creation time
+EVOLUTION,planner_id,string,,true,Opaque ID for propose-only planner
+EVOLUTION,mode,string,,true,CONSERVATIVE,COPILOT
+
+TRAIT,trait_id,string,,true,Symbolic trait name
+TRAIT,trait_version,string,,true,Semantic version
+TRAIT,blood_duty_cap,f32,0.0,0.3,true,Max BLOOD duty under activation
+TRAIT,protein_duty_cap,f32,0.0,0.3,true,Max PROTEIN duty under activation
+TRAIT,bci_cap,f32,0.0,0.3,true,Max BCI* scalar during trait use
+TRAIT,rod_cap,f32,0.0,1.0,true,Max allowed ROD
+TRAIT,lifeforce_band_min,f32,0.0,1.0,true,Minimum LifeforceBand
+TRAIT,healthcare_allowance,bool,,true,True if trait allowed for medical use
+
+EVIDENCE,hex_1_neuro_floor,string,,true,0x7fa3c9
+EVIDENCE,hex_2_atp_cap,string,,true,0x4b21d0
+EVIDENCE,hex_3_inflammation,string,,true,0x93e0aa
+EVIDENCE,hex_4_hrv_resilience,string,,true,0x2cd48f
+EVIDENCE,hex_5_eeg_coordination,string,,true,0x8ae17b
+EVIDENCE,hex_6_organ_corridor,string,,true,0x1f6b22
+EVIDENCE,hex_7_lifeforce_rod,string,,true,0xc3019e
+EVIDENCE,hex_8_ecology,string,,true,0x5d7f44
+EVIDENCE,hex_9_formal_proof,string,,true,0xa9c5b1
+EVIDENCE,hex_10_r_axis,string,,true,0x36e8c4
+
+FAIRNESS,r_axis_hash,string,,true,Hash of Responsibility Accumulation Function
+FAIRNESS,pre_r,f64,-10.0,10.0,true,r value before adoption
+FAIRNESS,post_r,f64,-10.0,10.0,true,r value after adoption
+FAIRNESS,delta_r,f64,0.0,10.0,true,Responsibility delta (must be ≥ 0)
+
+NEURORIGHTS,clause_ref_primary,string,,true,Primary neurorights clause ALN ref
+NEURORIGHTS,clause_ref_secondary,string,,false,Secondary clause for multi-region
+NEURORIGHTS,nonconsensual_mod_forbidden,bool,,true,true
+NEURORIGHTS,data_export_forbidden,bool,,true,true
+NEURORIGHTS,right_to_refuse_anytime,bool,,true,true
+NEURORIGHTS,augmentation_continuity,bool,,true,true
+
+JURISDICTION,primary_region,string,,true,US-CA,US-CO,EU-ETS,GLOBAL-MIN
+JURISDICTION,secondary_region,string,,false,Optional second region
+JURISDICTION,tertiary_region,string,,false,Optional third region
+JURISDICTION,smart_profile,string,,true,STRICTEST_WINS,HOST_ONLY
+JURISDICTION,applied_profile,string,,true,Effective neurorights profile ID
+
+COMPLIANCE,legal_profile_hash,string,,true,Hash of compiled legal profile set
+COMPLIANCE,technical_profile_hash,string,,true,Hash of guard/ALN config
+COMPLIANCE,biophysical_profile_hash,string,,true,Hash of corridors/envelopes
+COMPLIANCE,zk_attest_id,string,,false,Optional ZK attest packet ID
+
+ROLLBACK,emergency_corridor_allowed,bool,,true,True if emergency rollback corridor exists
+ROLLBACK,emergency_clause_ref,string,,false,ALNComplianceParticle clause reference
+ROLLBACK,host_authorized_downgrade,bool,,true,false
+
+AUDIT,organichain_txid,string,,false,If committed to Organichain
+AUDIT,googolswarm_proof_id,string,,false,Recursive ZK proof identifier
+AUDIT,git_commit_hash,string,,true,Github/ALN commit for this artifact
+AUDIT,hexstamp_local,string,,true,Host-local hexstamp for this .evo
+AUDIT,hexstamp_global,string,,false,Aggregated hexstamp for cross-region
+
+SIGN,host_bi_signature,string,,true,Signature from BrainIdentity enclave
+SIGN,sovereign_kernel_signature,string,,true,SovereignHost kernel signature
+SIGN,stake_multisig,string,,true,CSV of DIDs (host, OrganicCPU, Eibon)
