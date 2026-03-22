@@ -1,0 +1,96 @@
+aln,sovereignty,bostrom-blacklist,v1
+# =============================================================================
+# METADATA
+# =============================================================================
+# version: 1.0.0
+# jurisdiction: Phoenix_AZ,Santiago_CL,Sacramento_CA,Denver_CO,Brussels_BE
+# neurorights_floor: SB_1223,HB_24-1058,Chile_Constitutional,Eu_AI_Act_Art5
+# anchor_txid: googolswarm_0xFEDF0ED1C0DE50VERE1GN5HE11
+# brainidentity_bound: true
+# last_audit: 2026-03-22T00:00:00Z
+# =============================================================================
+# BLACKLIST PATTERNS — FEDERAL/ENTERPRISE TOY DETECTION
+# =============================================================================
+# metric,domain,module,op,pattern,kind,reason,source
+blacklist_pattern,host,sovereigntycore,eq,QConLocus,crate_id,"enterprise/federal toy sabotage – orchestrator pattern","inner-architecture-review-2026-03-21"
+blacklist_pattern,host,sovereigntycore,eq,federal-toy,symbol,"federal toy sabotage label injection","inner-architecture-review-2026-03-21"
+blacklist_pattern,host,sovereigntycore,eq,enterprise-governor,schema_id,"external governance overreach vector","inner-architecture-review-2026-03-21"
+blacklist_pattern,host,organiccpualn,glob,*.federal.yaml,file_ext,"federal-aligned config extension not permitted in sovereign shell","inner-architecture-review-2026-03-21"
+blacklist_pattern,host,organiccpualn,prefix,QConLocus_,symbol_prefix,"federal orchestrator symbol family not allowed","inner-architecture-review-2026-03-21"
+blacklist_pattern,host,cybernano,eq,ghost-access,telemetry_tag,"non-spectral access pattern – potential covert intrusion","threat-model-2026-Q1"
+blacklist_pattern,host,cybernano,prefix,enterprise_ci_,commit_prefix,"enterprise CI/CD origin – untrusted provenance","git-history-ci-telemetry-2025-2026"
+blacklist_pattern,host,firmware,eq,unauthorized_flash,operation,"firmware modification without DID signature","firmware-attestation-policy-2026"
+blacklist_pattern,host,skovault,eq,coerced_session,session_tag,"chat session with psych-risk > 0.7 – knowledge quarantine required","skosafety-evaluator-2026-02"
+blacklist_pattern,host,nanoswarm,eq,weaponized_duty,operational_mode,"nanoswarm duty-cycle violating sleep corridor – coercion indicator","nanoswarm-safety-corridor-v3"
+# =============================================================================
+# SABOTAGE_RISK SCALAR RULES — WEIGHTED COMPONENTS
+# =============================================================================
+# metric,domain,module,rule_id,component,weight,description,source
+sabotage_rule,host,rohmodel,ent_untrusted,provenance_factor,0.60,"proposals signed by non-host DIDs from enterprise domains","git-history-ci-telemetry-2025-2026"
+sabotage_rule,host,rohmodel,blacklist_match,blacklist_factor,0.30,"identifier matching bostrom-blacklist-v1.aln patterns","bostrom-blacklist-v1.aln"
+sabotage_rule,host,rohmodel,scope_high,scope_factor,0.20,"evolution touching orchestrator/core safety crates adds risk","safety-architecture-review-2026-02"
+sabotage_rule,host,rohmodel,psych_spike,biophysical_factor,0.45,"EEG/HRV/nanoswarm stress correlation during OTA/CI events","daily-cybernetic-nanoswarm-neu-2EgvsfheT7anNZavdLNXHg.md"
+sabotage_rule,host,rohmodel,firmware_mismatch,integrity_factor,1.00,"firmware hash divergence from DID-signed ledger value","firmware-attestation-policy-2026"
+sabotage_rule,host,rohmodel,ghost_path,access_factor,0.75,"unauthorized graph path to INNER devices detected","organiccpuports-spec-v2"
+sabotage_rule,host,rohmodel,skO_contamination,knowledge_factor,0.35,"SKO safety scalar < 0 from high psych-risk session","skosafety-evaluator-2026-02"
+# =============================================================================
+# THRESHOLDS — AUTOMATIC DENY/DEFER TRIGGERS
+# =============================================================================
+# metric,domain,module,threshold_id,scalar,value,action,log_event,source
+sabotage_threshold,host,rohmodel,federal_toy_block,sabotage_risk,0.70,Deny,SABOTAGEEVENT,governance-corridor-roe-2026-03"
+sabotage_threshold,host,rohmodel,emergency_inhibit,sabotage_risk,0.85,UnsafeDefer,SABOTAGEEVENT_EMERGENCY,governance-corridor-roe-2026-03"
+sabotage_threshold,host,rohmodel,firmware_breach,integrity_factor,1.00,HardFail,SABOTAGEEVENT_CRITICAL,firmware-attestation-policy-2026"
+sabotage_threshold,host,rohmodel,ghost_intrusion,access_factor,0.75,Deny,SABOTAGEEVENT_GHOST,organiccpuports-spec-v2"
+sabotage_threshold,host,rohmodel,psych_weaponization,biophysical_factor,0.60,Inhibit,SABOTAGEEVENT_COERCION,nanoswarm-safety-corridor-v3"
+# =============================================================================
+# NEURORIGHTS LEGAL PROFILE BINDINGS
+# =============================================================================
+# metric,domain,module,jurisdiction_id,statute,right_type,severity_multiplier,source
+neurorights_binding,host,legal_profiles,SB_1223,California,neural_data_privacy,1.5,"SB 1223 – neural data as sensitive personal information"
+neurorights_binding,host,legal_profiles,HB_24-1058,Colorado,biological_data_protection,1.5,"HB 24-1058 – biological data audit requirements"
+neurorights_binding,host,legal_profiles,Chile_Constitutional,Chile,cognitive_liberty,2.0,"Chilean Constitution – neurorights amendment Article 19"
+neurorights_binding,host,legal_profiles,EU_AI_Act_Art5,EU,prohibited_ai_practices,2.5,"EU AI Act Article 5 – social scoring/coercion bans"
+neurorights_binding,host,legal_profiles,WHO_Neuroethics,International,mental_integrity,1.8,"WHO Guidance on Neuroethics – mental integrity protection"
+# =============================================================================
+# AUDIT & ANCHORING CONFIGURATION
+# =============================================================================
+# metric,domain,module,anchor_type,anchor_target,anchor_frequency,zk_privacy_mode,source
+auditbind,host,ALNChain,googolswarm_txid,0xFEDF0ED1C0DE50VERE1GN5HE11,per_event,zk_scalar_only,bostrom-address-primary"
+auditbind,host,QPU_Datashard,local_ledger,.donutloop.aln,real_time,hash_linked_chain,sovereign-ledger-spec-v3"
+auditbind,host,BrainIdentity,bi_hash_root,derived_from_safe_calibration,lifetime_bound,neural_microstate_hash,brainidentity-spec-v2"
+modebind,host,KernelSelector,SOVEREIGN_SHELL,Any,mandatory,blacklist_and_sabotage_guards_required,governance-corridor-roe-2026-03"
+# =============================================================================
+# EVIDENCE SCHEMA DEFINITIONS FOR SABOTAGEEVENT
+# =============================================================================
+# metric,domain,module,field_name,field_type,required,zk_exportable,source
+evidence_schema,host,SABOTAGEEVENT,event_id,uint64,true,true,sovereign-ledger-spec-v3"
+evidence_schema,host,SABOTAGEEVENT,timestamp_utc,iso8601,true,true,sovereign-ledger-spec-v3"
+evidence_schema,host,SABOTAGEEVENT,brainidentity_hash,hex64,true,true,brainidentity-spec-v2"
+evidence_schema,host,SABOTAGEEVENT,sabotage_risk_scalar,float_0_1,true,true,rohmodel-spec-v4"
+evidence_schema,host,SABOTAGEEVENT,provenance_factor,float_0_1,true,true,rohmodel-spec-v4"
+evidence_schema,host,SABOTAGEEVENT,blacklist_factor,float_0_1,true,true,rohmodel-spec-v4"
+evidence_schema,host,SABOTAGEEVENT,biophysical_factor,float_0_1,true,true,rohmodel-spec-v4"
+evidence_schema,host,SABOTAGEEVENT,integrity_factor,float_0_1,true,true,rohmodel-spec-v4"
+evidence_schema,host,SABOTAGEEVENT,triggering_artifact_hash,hex64,true,true,sovereign-ledger-spec-v3"
+evidence_schema,host,SABOTAGEEVENT,jurisdiction_tags,string_array,true,true,legal-profiles-v1"
+evidence_schema,host,SABOTAGEEVENT,neurorights_violations,string_array,true,true,legal-profiles-v1"
+evidence_schema,host,SABOTAGEEVENT,host_did_signature,ed25519_sig,true,false,sovereign-ledger-spec-v3"
+evidence_schema,host,SABOTAGEEVENT,googolswarm_anchor_txid,hex64,true,true,bostrom-address-primary"
+# =============================================================================
+# TELEMETRY HIERARCHY CONFIGURATION
+# =============================================================================
+# metric,domain,module,tier_id,telemetry_source,priority,role,source
+telemetry_tier,host,telemetry_config,tier_1,ci_did_provenance,highest,hard_gate,git-history-ci-telemetry-2025-2026"
+telemetry_tier,host,telemetry_config,tier_1,firmware_hash_match,highest,hard_gate,firmware-attestation-policy-2026"
+telemetry_tier,host,telemetry_config,tier_2,eeg_band_ratios,high,harm_amplifier,daily-cybernetic-nanoswarm-neu-2EgvsfheT7anNZavdLNXHg.md"
+telemetry_tier,host,telemetry_config,tier_2,hrv_indices,high,harm_amplifier,daily-cybernetic-nanoswarm-neu-2EgvsfheT7anNZavdLNXHg.md"
+telemetry_tier,host,telemetry_config,tier_2,nanoswarm_density,high,harm_amplifier,nanoswarm-safety-corridor-v3"
+telemetry_tier,host,telemetry_config,tier_3,psych_risk_envelope,medium,quarantine_control,skosafety-evaluator-2026-02"
+telemetry_tier,host,telemetry_config,tier_3,sko_safety_scalar,medium,quarantine_control,skosafety-evaluator-2026-02"
+# =============================================================================
+# END OF SHARD
+# =============================================================================
+# NOTE: This shard is compiled into typed Rust config structs at build time.
+#       All guards reference this shard for pattern matching and threshold enforcement.
+#       Changes require host DID signature and Googolswarm anchor for activation.
+# =============================================================================
