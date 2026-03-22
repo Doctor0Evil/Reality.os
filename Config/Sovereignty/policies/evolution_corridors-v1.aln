@@ -1,0 +1,193 @@
+aln,sovereignty,evolution_corridors,v1
+# =============================================================================
+# METADATA
+# =============================================================================
+# version: 1.0.0
+# jurisdiction: Phoenix_AZ,Santiago_CL,Sacramento_CA,Denver_CO,Brussels_BE
+# neurorights_floor: SB_1223,HB_24-1058,Chile_Constitutional,Eu_AI_Act_Art5
+# anchor_txid: googolswarm_0xEV0LUT10N_C0RR1D0R_V1_50VERE1GN
+# brainidentity_bound: true
+# last_audit: 2026-03-22T00:00:00Z
+# monotonic_enforcement: mandatory
+# non_reversibility: enforced
+# discrimination_protection: enabled
+# =============================================================================
+# KNOWLEDGE FACTOR (KF) CORRIDOR DEFINITIONS
+# =============================================================================
+# metric,domain,module,param,value,scope,description,source
+evolution_corridor,host,rohmodel,kf_min,0.0,all,"Minimum Knowledge Factor floor — cannot decrease","monotonic-evolution-spec-v1"
+evolution_corridor,host,rohmodel,kf_max,1.0,all,"Maximum Knowledge Factor ceiling — normalized scale","monotonic-evolution-spec-v1"
+evolution_corridor,host,rohmodel,kf_delta_min,0.0,all,"Minimum KF delta per evolution — must be non-negative","monotonic-evolution-spec-v1"
+evolution_corridor,host,rohmodel,kf_delta_max,0.5,standard,"Maximum KF delta per standard evolution — prevents unrealistic jumps","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,kf_delta_max,0.3,orchestrator,"Maximum KF delta for orchestrator evolution — stricter bounds","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,kf_delta_max,0.2,core_safety,"Maximum KF delta for core safety evolution — maximum caution","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,kf_delta_max,0.25,firmware,"Maximum KF delta for firmware evolution — hardware-adjacent","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,kf_delta_max,0.35,ota_evolution,"Maximum KF delta for OTA evolution — network-delivered","evolution-corridor-review-2026-02"
+# =============================================================================
+# RISK OF HARM (ROH) CORRIDOR DEFINITIONS
+# =============================================================================
+# metric,domain,module,param,value,scope,description,source
+evolution_corridor,host,rohmodel,roh_min,0.0,all,"Minimum Risk of Harm floor — ideal state","monotonic-evolution-spec-v1"
+evolution_corridor,host,rohmodel,roh_max,1.0,all,"Maximum Risk of Harm ceiling — normalized scale","monotonic-evolution-spec-v1"
+evolution_corridor,host,rohmodel,roh_delta_max,0.0,all,"Maximum RoH delta per evolution — must not increase","monotonic-evolution-spec-v1"
+evolution_corridor,host,rohmodel,roh_ceiling_standard,0.7,standard,"Maximum RoH ceiling for standard evolution","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,roh_ceiling_orchestrator,0.4,orchestrator,"Maximum RoH ceiling for orchestrator evolution — stricter","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,roh_ceiling_core_safety,0.2,core_safety,"Maximum RoH ceiling for core safety — maximum protection","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,roh_ceiling_firmware,0.3,firmware,"Maximum RoH ceiling for firmware evolution","evolution-corridor-review-2026-02"
+evolution_corridor,host,rohmodel,roh_ceiling_ota,0.5,ota_evolution,"Maximum RoH ceiling for OTA evolution","evolution-corridor-review-2026-02"
+# =============================================================================
+# SCOPE MULTIPLIERS — CORRIDOR TIGHTENING FACTORS
+# =============================================================================
+# metric,domain,module,scope,multiplier,kf_weight,roh_weight,description,source
+scope_multiplier,host,rohmodel,standard,1.0,1.0,1.0,"Standard evolution — baseline corridor bounds","evolution-corridor-review-2026-02"
+scope_multiplier,host,rohmodel,orchestrator,0.5,0.5,0.5,"Orchestrator evolution — 50% tighter bounds","evolution-corridor-review-2026-02"
+scope_multiplier,host,rohmodel,core_safety,0.25,0.25,0.25,"Core safety evolution — 75% tighter bounds","evolution-corridor-review-2026-02"
+scope_multiplier,host,rohmodel,firmware,0.3,0.3,0.3,"Firmware evolution — 70% tighter bounds","evolution-corridor-review-2026-02"
+scope_multiplier,host,rohmodel,ota_evolution,0.4,0.4,0.4,"OTA evolution — 60% tighter bounds","evolution-corridor-review-2026-02"
+# =============================================================================
+# MONOTONIC EVOLUTION CONSTRAINTS — NON-NEGOTIABLE
+# =============================================================================
+# metric,domain,module,constraint_type,rule,enforcement,penalty,source
+monotonic_constraint,host,rohmodel,kf_non_decrease,kf_after >= kf_before,hard_fail,evolution_rejected,"monotonic-evolution-spec-v1"
+monotonic_constraint,host,rohmodel,roh_non_increase,roh_after <= roh_before,hard_fail,evolution_rejected,"monotonic-evolution-spec-v1"
+monotonic_constraint,host,rohmodel,kf_floor_persistence,kf_floor = max(all kf_after),hard_fail,evolution_rejected,"monotonic-evolution-spec-v1"
+monotonic_constraint,host,rohmodel,roh_ceiling_persistence,roh_ceiling = min(all roh_after),hard_fail,evolution_rejected,"monotonic-evolution-spec-v1"
+monotonic_constraint,host,rohmodel,chain_continuity,kf_before == parent.kf_after,hard_fail,evolution_rejected,"evolution-chain-spec-v1"
+monotonic_constraint,host,rohmodel,chain_continuity_roh,roh_before == parent.roh_after,hard_fail,evolution_rejected,"evolution-chain-spec-v1"
+monotonic_constraint,host,rohmodel,non_reversibility,no_kf_decrease_from_any_previous_state,hard_fail,evolution_rejected,"non-reversibility-spec-v1"
+monotonic_constraint,host,rohmodel,non_reversibility_roh,no_roh_increase_from_any_previous_state,hard_fail,evolution_rejected,"non-reversibility-spec-v1"
+# =============================================================================
+# ANTI-DISCRIMINATION SAFEGUARDS — PROTECTED ATTRIBUTES
+# =============================================================================
+# metric,domain,module,attribute,protection_level,violation_severity,legal_basis,source
+protected_attribute,host,legal_profiles,race,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,ethnicity,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,national_origin,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,skin_color,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,genetic_ancestry,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,phenotypic_markers,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,cultural_background,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,language_origin,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,religious_association,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+protected_attribute,host,legal_profiles,geographic_origin,absolute,evolution_rejected,"SB_1223,HB_24-1058,Chile_Constitutional","anti-discrimination-spec-v1"
+# =============================================================================
+# PROXY DISCRIMINATION PATTERNS — AUTOMATIC DETECTION
+# =============================================================================
+# metric,domain,module,pattern_type,pattern,severity,action,source
+proxy_discrimination_pattern,host,evolution_guard,identifier_keyword,"[Pp]rofile.*[Rr]ace",critical,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,identifier_keyword,"[Cc]lassify.*[Ee]thnic",critical,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,identifier_keyword,"[Ss]core.*[Gg]enetic",critical,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,identifier_keyword,"[Rr]isk.*[Aa]ncestry",critical,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,identifier_keyword,"[Pp]redict.*[Pp]henotyp",critical,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,commit_metadata,"[Gg]eographic.*[Pp]rofile",high,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,commit_metadata,"[Ll]inguistic.*[Aa]nalysis",high,evolution_rejected,"anti-discrimination-spec-v1"
+proxy_discrimination_pattern,host,evolution_guard,commit_metadata,"[Bb]ehavioral.*[Rr]ace",critical,evolution_rejected,"anti-discrimination-spec-v1"
+# =============================================================================
+# JUSTIFICATION SKO REQUIREMENTS — HIGH-SCOPE EVOLUTIONS
+# =============================================================================
+# metric,domain,module,scope,requirement,validation,source
+justification_requirement,host,evolution_guard,standard,optional,none,"evolution-corridor-review-2026-02"
+justification_requirement,host,evolution_guard,orchestrator,mandatory,sko_hash_required,"evolution-corridor-review-2026-02"
+justification_requirement,host,evolution_guard,core_safety,mandatory,sko_hash_required,"evolution-corridor-review-2026-02"
+justification_requirement,host,evolution_guard,firmware,mandatory,sko_hash_required,"evolution-corridor-review-2026-02"
+justification_requirement,host,evolution_guard,ota_evolution,mandatory,sko_hash_required,"evolution-corridor-review-2026-02"
+# =============================================================================
+# EVIDENCE & AUDIT ANCHORING CONFIGURATION
+# =============================================================================
+# metric,domain,module,anchor_type,anchor_target,anchor_frequency,zk_privacy_mode,source
+auditbind,host,ALNChain,googolswarm_txid,0xEV0LUT10N_C0RR1D0R_V1,per_event,zk_scalar_only,"evolution-corridor-review-2026-02"
+auditbind,host,QPU_Datashard,local_ledger,.qpu_datashard/,real_time,hash_linked_chain,"sovereign-ledger-spec-v3"
+auditbind,host,BrainIdentity,bi_hash_root,derived_from_safe_calibration,lifetime_bound,"brainidentity-spec-v2"
+auditbind,host,EvolutionChain,parent_child_linking,enforced,hash_verified,"evolution-chain-spec-v1"
+# =============================================================================
+# EVOLUTION EVENT SCHEMA — COURT-ADMISSIBLE FORMAT
+# =============================================================================
+# metric,domain,module,field_name,field_type,required,zk_exportable,source
+evidence_schema,host,EVOLUTIONEVENT,event_id,uint64,true,true,"sovereign-ledger-spec-v3"
+evidence_schema,host,EVOLUTIONEVENT,timestamp_utc,iso8601,true,true,"sovereign-ledger-spec-v3"
+evidence_schema,host,EVOLUTIONEVENT,brainidentity_hash,hex64,true,true,"brainidentity-spec-v2"
+evidence_schema,host,EVOLUTIONEVENT,evolution_id,uuid,true,true,"evolution-chain-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,evolution_identifier,string,true,true,"evolution-chain-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,signer_did,did_string,true,true,"sovereign-ledger-spec-v3"
+evidence_schema,host,EVOLUTIONEVENT,scope,enum,true,true,"evolution-corridor-review-2026-02"
+evidence_schema,host,EVOLUTIONEVENT,kf_before,float_0_1,true,true,"monotonic-evolution-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,kf_after,float_0_1,true,true,"monotonic-evolution-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,kf_delta,float,true,true,"monotonic-evolution-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,roh_before,float_0_1,true,true,"monotonic-evolution-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,roh_after,float_0_1,true,true,"monotonic-evolution-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,roh_delta,float,true,true,"monotonic-evolution-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,validation_result,json_object,true,true,"evolution-guard-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,evidence_hash,hex64,true,true,"sovereign-ledger-spec-v3"
+evidence_schema,host,EVOLUTIONEVENT,host_did_signature,ed25519_sig,true,false,"sovereign-ledger-spec-v3"
+evidence_schema,host,EVOLUTIONEVENT,googolswarm_anchor_txid,hex64,true,true,"googolswarm-anchor-spec-v1"
+evidence_schema,host,EVOLUTIONEVENT,parent_evolution_id,uuid,false,true,"evolution-chain-spec-v1"
+# =============================================================================
+# LEGAL PROFILE BINDINGS — JURISDICTIONAL MAPPING
+# =============================================================================
+# metric,domain,module,jurisdiction_id,statute,right_type,severity_multiplier,source
+neurorights_binding,host,legal_profiles,SB_1223,California,neural_data_privacy,1.5,"SB 1223 – neural data as sensitive personal information"
+neurorights_binding,host,legal_profiles,HB_24-1058,Colorado,biological_data_protection,1.5,"HB 24-1058 – biological data audit requirements"
+neurorights_binding,host,legal_profiles,Chile_Constitutional,Chile,cognitive_liberty,2.0,"Chilean Constitution – neurorights amendment Article 19"
+neurorights_binding,host,legal_profiles,EU_AI_Act_Art5,EU,prohibited_ai_practices,2.5,"EU AI Act Article 5 – social scoring/coercion bans"
+neurorights_binding,host,legal_profiles,WHO_Neuroethics,International,mental_integrity,1.8,"WHO Guidance on Neuroethics – mental integrity protection"
+neurorights_binding,host,legal_profiles,US_Constitution_Amendment14,USA,equal_protection,2.0,"14th Amendment – equal protection under law (anti-discrimination)"
+neurorights_binding,host,legal_profiles,Civil_Rights_Act_1964,USA,employment_discrimination,2.0,"Civil Rights Act – prohibited discrimination bases"
+# =============================================================================
+# VIOLATION PENALTIES — ENFORCEMENT ACTIONS
+# =============================================================================
+# metric,domain,module,violation_type,penalty_type,penalty_severity,appeal_allowed,source
+violation_penalty,host,evolution_guard,kf_decrease,hard_fail,critical,false,"monotonic-evolution-spec-v1"
+violation_penalty,host,evolution_guard,roh_increase,hard_fail,critical,false,"monotonic-evolution-spec-v1"
+violation_penalty,host,evolution_guard,corridor_exceed,hard_fail,high,false,"evolution-corridor-review-2026-02"
+violation_penalty,host,evolution_guard,reversal_detected,hard_fail,critical,false,"non-reversibility-spec-v1"
+violation_penalty,host,evolution_guard,discrimination_detected,hard_fail,critical,false,"anti-discrimination-spec-v1"
+violation_penalty,host,evolution_guard,proxy_discrimination,hard_fail,critical,false,"anti-discrimination-spec-v1"
+violation_penalty,host,evolution_guard,missing_justification_sko,soft_fail,medium,true,"evolution-corridor-review-2026-02"
+violation_penalty,host,evolution_guard,chain_break,hard_fail,high,false,"evolution-chain-spec-v1"
+violation_penalty,host,evolution_guard,hash_mismatch,hard_fail,critical,false,"sovereign-ledger-spec-v3"
+# =============================================================================
+# TELEMETRY CORRELATION — BIOPHYSICAL VALIDATION
+# =============================================================================
+# metric,domain,module,telemetry_source,correlation_type,threshold,action,source
+telemetry_correlation,host,rohmodel,eeg_stress_ratio,spike_detection,0.7,flag_for_review,"daily-cybernetic-nanoswarm-neu-2EgvsfheT7anNZavdLNXHg.md"
+telemetry_correlation,host,rohmodel,hrv_anomaly_index,spike_detection,0.6,flag_for_review,"daily-cybernetic-nanoswarm-neu-2EgvsfheT7anNZavdLNXHg.md"
+telemetry_correlation,host,rohmodel,nanoswarm_density,correlation,0.8,inhibit_if_evolution,"nanoswarm-safety-corridor-v3"
+telemetry_correlation,host,rohmodel,sleep_corridor_violated,boolean,true,defer_evolution,"nanoswarm-safety-corridor-v3"
+telemetry_correlation,host,rohmodel,cytokine_stress,baseline_deviation,0.5,flag_for_review,"biophysical-telemetry-spec-v2"
+# =============================================================================
+# EVOLUTION HISTORY RETENTION — AUDIT REQUIREMENTS
+# =============================================================================
+# metric,domain,module,retention_type,value,unit,legal_basis,source
+retention_policy,host,qpu_datashard,evolution_history_max_size,10000,entries,"audit_trail_requirements","sovereign-ledger-spec-v3"
+retention_policy,host,qpu_datashard,evolution_history_retention,365,days,"audit_trail_requirements","sovereign-ledger-spec-v3"
+retention_policy,host,qpu_datashard,violation_log_retention,2555,days,"7_year_legal_requirement","legal-profiles-v1"
+retention_policy,host,qpu_datashard,anchor_txid_retention,permanent,indefinite,"blockchain_immutability","googolswarm-anchor-spec-v1"
+# =============================================================================
+# EXPORT & AUDIT TRAIL CONFIGURATION
+# =============================================================================
+# metric,domain,module,export_type,format,signature_required,anchor_required,source
+export_config,host,audit_trail,evolution_events,json,true,true,"sovereign-ledger-spec-v3"
+export_config,host,audit_trail,violation_log,json,true,true,"anti-discrimination-spec-v1"
+export_config,host,audit_trail,monotonic_bounds_audit,json,true,true,"monotonic-evolution-spec-v1"
+export_config,host,audit_trail,court_admissible_package,pdf_signed,true,true,"legal-profiles-v1"
+export_config,host,audit_trail,zk_proof_export,snark,true,true,"zk-privacy-spec-v1"
+# =============================================================================
+# END OF SHARD
+# =============================================================================
+# NOTE: This shard is compiled into typed Rust/Lua config structs at build time.
+#       All evolution guards reference this shard for corridor bounds and constraints.
+#       Changes require host DID signature and Googolswarm anchor for activation.
+#       Monotonic constraints cannot be relaxed without breaking evolution chain integrity.
+# =============================================================================
+# LEGAL NOTICE:
+#   This ALN shard encodes neurorights-compliant evolution constraints that are
+#   legally binding under SB 1223 (California), HB 24-1058 (Colorado), Chilean
+#   Constitutional Neurorights, and EU AI Act Article 5. Any attempt to modify
+#   these constraints without proper authorization constitutes a neurorights
+#   violation and may be prosecuted under applicable jurisdictional statutes.
+#
+#   All evolution events logged under this shard are court-admissible evidence
+#   when anchored to Googolswarm with valid BrainIdentity binding and host DID
+#   signature. Spoliation or alteration of evolution records constitutes evidence
+#   tampering and may result in adverse inference in legal proceedings.
+# =============================================================================
